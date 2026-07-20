@@ -1,21 +1,24 @@
 # Getting Started
 
-Setup is a single **run-once** prompt. You paste [`init-prompt.md`](../init-prompt.md) into an AI coding tool,
-answer a short interview, and it scaffolds the whole vault for you.
+Setup is a single **run-once installer**. You paste [`bootstrap.md`](../bootstrap.md) into an AI coding tool,
+it checks prerequisites and asks where to install, you answer a short interview, and it scaffolds the whole vault
+from the real files under [`seed/`](../seed/).
 
 ## Prerequisites
 
-- **An agentic AI coding tool** — e.g. Claude Code, OpenAI Codex CLI, Gemini CLI, Cursor, aider. This is your
-  *primary* driver.
-- **`git`** — the default ticket workflow uses one isolated worktree per ticket. (Not on git? Tell the prompt
+- **An agentic AI coding tool** — **Claude Code** or **OpenAI Codex CLI**. This is your *primary* driver.
+- **`git`** — the default ticket workflow uses one isolated worktree per ticket. (Not on git? Tell the installer
   during the interview and it swaps in a plain branch-per-ticket flow.)
-- **Ideally a second model provider** — for the cross-provider plan-review gate. Cross-*family* matters more
-  than cross-vendor (Claude ↔ GPT ↔ Gemini ↔ a strong open model are good pairings). If you only have one
-  provider, that's fine — the gate degrades gracefully.
+- **A second provider** — for the cross-provider review gates (the plan *and* the code are each reviewed by a
+  different model). This vault pairs **Claude Code ↔ Codex**. The reviewer must be a *different* provider than
+  the author. Its CLI must be **installed and working** — the gates are core, not optional. You must also run
+  each chosen CLI **once inside each repo** to grant it write/trust there.
 
 Optional but recommended:
 
-- **A code-host CLI** — `gh` (GitHub) or `glab` (GitLab), authenticated, for the PR/MR review workflow.
+- **A code-intelligence index** — a symbol/graph indexer (e.g. an MCP like **codegraph**). Strongly recommended:
+  the phases query it instead of re-scanning files, which is cheaper and keeps the vault free of code copies.
+- **A code-host CLI** — `gh` (GitHub) or `glab` (GitLab), authenticated, for the PR/MR review and ship steps.
 - **A ticket system** — Jira, GitHub/GitLab Issues, Linear, … reachable via MCP, a CLI, or its API. No ticket
   system? The vault uses local Markdown tickets (`TASK-001`).
 - **[Obsidian](https://obsidian.md)** — for `[[wikilinks]]` and graph view. The vault is just Markdown, so any
@@ -23,27 +26,27 @@ Optional but recommended:
 
 ## Steps
 
-1. Pick (or create) an **empty directory** for your vault — somewhere synced/backed-up (iCloud, Dropbox, a
-   private git repo). This is **separate from this repo**; the vault is not created here.
-2. Open your AI coding tool with that directory as its working directory.
-3. Paste the full contents of [`init-prompt.md`](../init-prompt.md) and run it.
-4. Answer the interview (below). Defaults are offered everywhere — "pick a sensible default" is a valid answer.
-5. Review and approve the **settings block** it echoes back before it writes anything.
-6. It scaffolds the vault, runs a verification checklist, and then retires the prompt (moves it into `raw/` or
-   deletes it). Its job is done; the generated `CLAUDE.md` now governs the vault.
+1. Pick (or create) an **empty directory** for your vault — somewhere synced/backed-up (iCloud, Dropbox). This
+   is **separate from this repo**; the vault is not installed here.
+2. Open your AI coding tool.
+3. Paste the full contents of [`bootstrap.md`](../bootstrap.md) and run it.
+4. It **checks prerequisites**, then **asks where to install** (an absolute path + a name) before anything else.
+5. Answer the interview (below). Defaults are offered everywhere — "pick a sensible default" is a valid answer.
+6. Review and approve the **settings block** it echoes back before it writes anything.
+7. It installs the vault, installs your first project(s), runs a verification checklist, and retires the
+   installer. Its job is done; the generated `CLAUDE.md` now governs the vault.
 
 ## The interview (what you'll be asked)
 
-Have rough answers ready for these — each comes with advice and a default during the interview:
+Have rough answers ready — each comes with advice and a default during the interview:
 
-1. **Vault location & name** — where it lives, what it's called.
-2. **LLM providers** — your primary model, and at least one *different* model for the review gate.
+1. **Install location & name** — an empty folder path, and what to call the vault. (Asked first.)
+2. **Providers & models** — your primary (Claude Code or Codex) and model, and the *other* provider + model for the review gates.
 3. **Version control** — usually `git`; your default branch (`main`/`master`/`trunk`).
-4. **Code host** — GitHub / GitLab / Bitbucket / … and whether you have its CLI (`gh`/`glab`) authenticated.
-5. **Plan-review pairing** — which model reviews plans, and how it's invoked.
-6. **Ticket system** — which one (or none), the ticket-ID pattern, and how to reach it.
-7. **Worktree & env conventions** — where per-ticket worktrees live, and any local-only files (`.env`, secrets)
-   to copy into each worktree.
+4. **Code host** — GitHub / GitLab / … its CLI (`gh`/`glab`), and any auto-reviewer bot to request on PRs.
+5. **Ticket system** — which one (or none), the ticket-ID pattern, and how to reach it.
+6. **Worktrees & env files** — per-project worktree root (default `<repo>/.worktrees`; you gitignore it) and any local-only files to copy into each worktree.
+7. **Code-intelligence index** — whether you have one (e.g. codegraph), or none.
 8. **First project(s)** — the repo(s) to document first: name, path, stack, and layers.
 
 ## What you get
@@ -60,16 +63,25 @@ A directory tree of Markdown — your vault:
 ├── project-registry.md    # tracked repos (referenced by path, never copied in)
 ├── ticket-registry.md     # ticket state
 ├── raw/                   # immutable source docs you drop in
-├── projects/              # per-project wiki, personas, and tasks
+├── projects/              # per-project raw, wiki, architect/engineer personas, and tasks
 └── skills/
-    ├── ticket-workflow.md      # clarify → plan → review → execute → QA → curate
-    ├── pr-review-workflow.md   # two-stage, ticket-aware PR/MR review
-    ├── add-project.md          # onboard a new codebase
-    ├── personas/               # generic personas (analyst, planner, reviewer, QA, curator, …)
-    └── templates/              # ticket / plan / decision / pr-review templates
+    ├── ticket-workflow.md      # composer: dispatch by status + enforce gates
+    ├── ticket-research.md      # phase 1 — Business Analyst
+    ├── ticket-planning.md      # phase 2 — Domain Architect
+    ├── ticket-execution.md     # phase 3 — Engineer(s)
+    ├── ticket-finalizing.md    # phase 4 — QA → Ship (ends at done)
+    ├── ticket-curation.md      # phase 5 — Curator (done → curated)
+    ├── pr-review-workflow.md   # standalone, two-stage PR/MR review
+    ├── add-project.md          # onboard a new codebase (installer)
+    ├── commit.md               # conventional-commit helper
+    ├── lint.md                 # health check + status reconciliation
+    ├── shared/                 # references (status, conventions, personas, gates, worktrees, providers)
+    ├── personas/               # generic personas (analyst, fallback architect, QA, curator, PR reviewer)
+    └── templates/              # ticket / plan / decision / pr-review / project-personas / architect / engineer
 ```
 
 The moving parts, kept deliberately separate: **knowledge** (wiki pages) ≠ **procedure** (skills) ≠ **behavior**
-(personas) ≠ **state** (registries/log).
+(personas) ≠ **state** (registries/log). Within procedure, the composer *routes*, the phase skills *do the work*,
+and `skills/shared/` holds the *facts* they share.
 
 Once it's built, head to **[usage.md](usage.md)** for day-to-day work.

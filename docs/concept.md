@@ -31,19 +31,52 @@ The whole design assumes **a different model may pick up the work cold tomorrow.
 that is possible — which is also why each workflow phase is owned by a named *persona* with explicit inputs,
 outputs, and handoff signals.
 
-## The independent review gate
+## A composed five-phase ticket lifecycle
 
-A plan reviewed only by its author inherits the author's blind spots. So before any plan reaches you, it is
-reviewed by a **second model on a different provider/family**. This catches non-executable steps, missing
-acceptance-criteria coverage, and scope drift before a human ever looks. If you only have one provider, the gate
-degrades gracefully (different model tier + a static analyzer + an explicit "refute your own plan" pass) — weaker,
-but still useful.
+The ticket workflow is deliberately **not** one big procedure. A thin **composer** (`ticket-workflow.md`) reads
+the ticket's current status and dispatches to one of five self-contained **phase skills** — research, planning,
+execution, finalizing, **curation** — enforcing a hard gate at each boundary. The facts every phase needs
+(status vocabularies, conventions, persona routing, gate mechanics, worktree rules, provider setup) live in
+**shared reference files** that each phase links to, so nothing is duplicated and any phase can be resumed cold.
+
+Two design choices come straight from real-world pain:
+
+- **`done` and `curated` are separate statuses.** "Shipped" and "knowledge harvested into the wiki" are
+  different milestones. Curation is its own phase, not a footnote to shipping — so a shipped-but-unharvested
+  ticket is *visible* (the `lint` skill flags it) and *resumable* (re-run the workflow; it dispatches straight to
+  curation). Curation used to get skipped; now it can't quietly vanish.
+- **Every status change is written twice — to the ticket and to the registry — in the same step**, and the
+  `lint` skill reconciles the two. Forgotten transitions (especially "→ done") were a recurring failure; now
+  they surface.
+
+Each phase is owned by a persona. **Generic** personas (Business Analyst, QA Engineer, Curator, Principal
+Engineer Reviewer) are shared across all projects; **project-specific** personas come in pairs per layer — a
+**Domain Architect** that plans and an **Engineer** that executes — so they encode each repo's real stack and
+file layout.
+
+## The independent review gates
+
+Work reviewed only by its author inherits the author's blind spots. So the lifecycle has **two** cross-provider
+review gates, each run by a **second model on a different provider** (this vault pairs **Claude Code** and
+**OpenAI Codex**):
+
+- **Plan review** — before any plan reaches you, a different model (acting as the Business Analyst) checks it
+  for non-executable steps, missing acceptance-criteria coverage, and scope drift.
+- **Code review** — before a change reaches QA, a different model (acting as the relevant Engineer) reviews the
+  diff against conventions, patterns, ADRs, behavior impact, and test quality.
+
+Reviewers run **non-interactively** — a one-shot headless `exec` (`codex exec`, `claude -p`), not a spawned
+interactive agent. That matters: interactive/ACP sub-agents were observed to *stall* mid-review; the one-shot
+form is reliable and autonomous. The reviewer returns findings and a verdict; **only the main agent** ever stops
+to ask you something. And if a reviewer provider is missing or unauthorized at gate time, the main agent stops
+and asks you to fix it — it never silently skips the gate. The *plan* also always passes a hard **human approval
+gate** before any code is written.
 
 ## Opinionated by design
 
 This implementation is opinionated. It's tailored to my needs, which may not match yours. It is definitely
 **not** a silver bullet, and you should have a little experience with agentic coding — or at least have tried
-some AI-driven coding with tools like Claude Code, Codex, or OpenCode.
+some AI-driven coding with tools like Claude Code or Codex.
 
 It is **not** a fully automated system. It is low-level and deliberately so. It's like having a person you can
 tell *what* to do and *how* to do it. I want you to adjust it to your needs — though you can use it as-is.
