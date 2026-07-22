@@ -23,12 +23,12 @@ want). It's a **composer**: it reads the ticket's current status and dispatches 
 enforcing a gate at each boundary. You'll be asked for clarification or input whenever something is ambiguous.
 The lifecycle:
 
-1. **Research** *(Business Analyst)* — turn vague goals into observable outcomes and testable acceptance criteria; produce a `ready` ticket.
+1. **Research** *(Business Analyst)* — turn vague goals into observable outcomes and testable acceptance criteria; produce a `ready` ticket. You also **pick this ticket's cross-model reviewer** here (provider + model), defaulting to a provider different from the one you're driving — it's stored on the ticket and used by both review gates below.
 2. **Planning** *(Domain Architect)* — produce a detailed, code-level plan (always, even for trivial work), with the fewest changes that satisfy the ticket and a test planned for every change.
-3. **Cross-model plan review** — a *different* model (as the Business Analyst), run non-interactively, reviews the plan; findings are folded in.
+3. **Cross-model plan review** — the ticket's chosen reviewer (a *different* provider, acting as the Business Analyst), run non-interactively, reviews the plan; findings are folded in.
 4. **Your approval** — nothing is implemented until you approve the plan. Hard gate.
 5. **Execution** *(Engineer)* — work happens inside the ticket's own worktree/branch; no code change without an automated test.
-6. **Cross-model code review** — a *different* model (as the Engineer) reviews the diff against conventions, scope, ADRs, and tests.
+6. **Cross-model code review** — the ticket's chosen reviewer (a *different* provider, acting as the Engineer) reviews the diff against conventions, scope, ADRs, and tests.
 7. **QA** — the change is validated against every acceptance criterion. Passing → `done`.
 8. **Ship** — changes are committed (via the `commit` skill, conventional commits, no AI mentions), pushed, and a PR/MR is opened.
 9. **Curate** — a separate phase: once `done`, learnings are promoted to the wiki and the ticket moves to `curated`.

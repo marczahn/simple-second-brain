@@ -11,15 +11,15 @@ updated: <today>
 
 **Owner:** Engineering persona(s) — resolved from the project's `personas.md` by the ticket's `domain:`.
 **Consumes:** an `approved` plan. **Produces:** reviewed code + tests on the ticket's branch, ticket `in-review` → ready for finalizing.
-**Shared infra:** [[ticket-worktrees]], [[ticket-gates]] (review + user gates), [[providers]], [[ticket-personas]] (routing), [[ticket-status-model]]. Entry point: [[ticket-workflow]].
+**Shared infra:** [ticket-worktrees](shared/ticket-worktrees.md), [ticket-gates](shared/ticket-gates.md) (review + user gates), [providers](shared/providers.md), [ticket-personas](shared/ticket-personas.md) (routing), [ticket-status-model](shared/ticket-status-model.md). Entry point: [ticket-workflow](ticket-workflow.md).
 
 For `full-stack` tickets the Backend Engineer executes the backend phase first, then hands to the Frontend Engineer.
 
 ## Steps
 
-1. **Confirm the user approved the plan** (see [[ticket-gates#User Plan Review Gate]]). Do not start otherwise.
-2. **Check the plan.** If anything is uncertain or no longer fits reality, stop and return to [[ticket-planning]] (or [[ticket-research]] if scope shifts).
-3. **Create or reuse the worktree** per [[ticket-worktrees#Worktree Per Ticket]]. All edits happen inside it, on the ticket's branch. Set ticket `in-progress` (frontmatter + registry).
+1. **Confirm the user approved the plan** (see [ticket-gates#User Plan Review Gate](shared/ticket-gates.md#user-plan-review-gate)). Do not start otherwise.
+2. **Check the plan.** If anything is uncertain or no longer fits reality, stop and return to [ticket-planning](ticket-planning.md) (or [ticket-research](ticket-research.md) if scope shifts).
+3. **Create or reuse the worktree** per [ticket-worktrees#Worktree Per Ticket](shared/ticket-worktrees.md#worktree-per-ticket). All edits happen inside it, on the ticket's branch. Set ticket `in-progress` (frontmatter + registry).
 4. **Execute the plan steps** for the active domain phase. Follow project conventions, key patterns, and ADRs — respect the guardrails. Record deviations in `plan.md` as they happen.
 5. **Mind behavior impact.** Before and after each change, check whether it affects behavior used elsewhere (code-intelligence index / `grep`). Handle the fallout in scope or escalate.
 6. **No code change without automated tests.** Create or adjust tests for every behavior change. Run the plan's validation commands and confirm they pass.
@@ -29,7 +29,7 @@ For `full-stack` tickets the Backend Engineer executes the backend phase first, 
 
 ## Cross-Model Review Gate
 
-Mandatory, after implementation — mechanics, provider pairing, non-interactive invocation, and findings handling in [[ticket-gates#Cross-Model Review Gate]]. The gate is **part of this phase**: the ticket stays `in-progress` while the review runs, so a ticket resumed at `in-progress` re-enters execution and the gate runs (again) — it is never skipped.
+Mandatory, after implementation — mechanics, the per-ticket reviewer, non-interactive invocation, and findings handling in [ticket-gates#Cross-Model Review Gate](shared/ticket-gates.md#cross-model-review-gate). The reviewer runs on the provider + model recorded on the ticket (`reviewer_provider` / `reviewer_model`). The gate is **part of this phase**: the ticket stays `in-progress` while the review runs, so a ticket resumed at `in-progress` re-enters execution and the gate runs (again) — it is never skipped.
 
 Phase specifics: the reviewer adopts the relevant **Engineering persona(s)** for the ticket's `domain:` (project `personas.md`); for `full-stack`, the Backend and Frontend Engineer personas each review their layer. The review validates the diff against conventions, key patterns, ADRs, behavior impact, scope discipline, and test coverage. Reviewer artifacts: persona file(s), `plan.md`, `ticket.md`, and the diff/branch.
 
@@ -37,10 +37,10 @@ If the review returns **revise**, fold the findings in (or record a deliberate d
 
 ## Boundaries
 
-- Does not validate against acceptance criteria — that is the QA Engineer in [[ticket-finalizing]].
+- Does not validate against acceptance criteria — that is the QA Engineer in [ticket-finalizing](ticket-finalizing.md).
 - Does not update project wiki pages, index, or log.
 - Does not remove the worktree — cleanup is manual, by the user.
 
 ## Handoff
 
-Branch clean, cross-model review approved, ticket `in-review` (frontmatter + registry) → hand to [[ticket-finalizing]].
+Branch clean, cross-model review approved, ticket `in-review` (frontmatter + registry) → hand to [ticket-finalizing](ticket-finalizing.md).

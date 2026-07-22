@@ -9,7 +9,7 @@ updated: <today>
 
 # Ticket Gates
 
-The hard gates that bound the ticket phases. Planning and Execution each end on the Cross-Model Review Gate; Planning additionally clears the User Plan Review Gate before any code is written. Phase-specific reviewer/persona detail lives in the phase skills ([[ticket-planning]], [[ticket-execution]]); this file owns the mechanics. Provider setup and invocation live in [[providers]].
+The hard gates that bound the ticket phases. Planning and Execution each end on the Cross-Model Review Gate; Planning additionally clears the User Plan Review Gate before any code is written. Phase-specific reviewer/persona detail lives in the phase skills ([ticket-planning](../ticket-planning.md), [ticket-execution](../ticket-execution.md)); this file owns the mechanics. Provider setup and invocation live in [providers](providers.md).
 
 ## Cross-Model Review Gate
 
@@ -18,28 +18,26 @@ Both Planning and Execution end with a mandatory review by a **reviewer agent on
 - **Plan review** → reviewer adopts the **Business Analyst** persona (validates the plan against the ticket's problem, scope, and acceptance criteria).
 - **Code review** → reviewer adopts the relevant **Engineering persona(s)** (validates the diff against conventions, patterns, ADRs, and tests).
 
-**Provider pairing — always cross:**
+**Who reviews — chosen per ticket, always cross:**
 
-| Authored by | Reviewer runs on | Invocation |
-|-------------|------------------|------------|
-| {{PRIMARY_PROVIDER}} ({{PRIMARY_MODEL}}) | {{REVIEWER_PROVIDER}} ({{REVIEWER_MODEL}}) | `{{REVIEWER_INVOCATION}}` |
-| {{REVIEWER_PROVIDER}} ({{REVIEWER_MODEL}}) | {{PRIMARY_PROVIDER}} ({{PRIMARY_MODEL}}) | `{{PRIMARY_CLI}}` |
-
-Same-provider review does not satisfy this gate.
+- The reviewer is the provider + model **recorded on the ticket** (`reviewer_provider` / `reviewer_model`), selected at ticket start (see [ticket-research](../ticket-research.md)). Both gates on the ticket use it.
+- The **author** is whatever tool is driving the work. The reviewer **must be a different provider** than the author — same-provider review does **not** satisfy this gate.
+- Invoke the chosen provider headless per its command template in [providers#Headless (non-interactive) invocation](providers.md#headless-non-interactive-invocation), pinning the ticket's `reviewer_model`.
+- **No reviewer recorded** (e.g. imported ticket)? Stop and ask the user to pick one before running the gate — the default/pre-selected choice is always a genuine cross-model one (a provider different from the current driver).
 
 ### How the reviewer runs
 
-- **Non-interactive and autonomous.** Invoke the reviewer headless (see [[providers#Headless (non-interactive) invocation]]) — a one-shot `exec`/`-p` call, **not** a spawned interactive/ACP agent (those stall). The reviewer reads the artifact paths, returns structured findings + a verdict, and never stops to ask questions.
+- **Non-interactive and autonomous.** Invoke the reviewer headless (see [providers#Headless (non-interactive) invocation](providers.md#headless-non-interactive-invocation)) — a one-shot `exec`/`-p` call, **not** a spawned interactive/ACP agent (those stall). The reviewer reads the artifact paths, returns structured findings + a verdict, and never stops to ask questions.
 - **Point, don't paste.** Give it the persona file and the artifact paths (ticket, plan, decisions, touched code) — do not paste full context. Pin the reviewer model so the gate is reproducible. Keep it read-only.
 - **Only the main agent asks the human.** If the reviewer surfaces open questions, the main agent decides whether to fold them in or escalate to the human — the sub-agent itself never blocks on input.
 
 ### Verdict handling
 
-The reviewer returns structured findings and a verdict (**approve** / **revise** with specific changes). The author folds findings into the artifact or records a deliberate dismissal (with reason) on the ticket/decision page, then advances status (writing both frontmatter and registry — see [[ticket-conventions#Registry Rules]]).
+The reviewer returns structured findings and a verdict (**approve** / **revise** with specific changes). The author folds findings into the artifact or records a deliberate dismissal (with reason) on the ticket/decision page, then advances status (writing both frontmatter and registry — see [ticket-conventions#Registry Rules](ticket-conventions.md#registry-rules)).
 
 ### If the reviewer provider is unavailable
 
-If the configured reviewer CLI is not installed, not authenticated, or lacks write/trust for the project at gate time, **the main agent stops and asks the human to fix it.** It does **not** silently skip the gate or quietly downgrade to same-provider review. Proceed only after the human resolves it (installs/authorizes the CLI, or explicitly chooses an alternative). See [[providers#If a provider is missing or unauthorized]].
+If the configured reviewer CLI is not installed, not authenticated, or lacks write/trust for the project at gate time, **the main agent stops and asks the human to fix it.** It does **not** silently skip the gate or quietly downgrade to same-provider review. Proceed only after the human resolves it (installs/authorizes the CLI, or explicitly chooses an alternative). See [providers#If a provider is missing or unauthorized](providers.md#if-a-provider-is-missing-or-unauthorized).
 
 ## User Plan Review Gate
 

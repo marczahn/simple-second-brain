@@ -25,7 +25,7 @@ Onboards a new codebase into the vault. **Runs as a guided installation** — it
 ### 1. Preflight (installer checks)
 
 - Confirm the repo path exists and is a git repo (`git -C <path> rev-parse --show-toplevel`).
-- Confirm the configured provider CLIs are installed and working (see [[providers]]). **Grant per-project write/trust now:** run each configured CLI **once inside this repo** so it can operate there later — a common cause of later gate failures is skipping this one-time grant.
+- Confirm the configured provider CLIs are installed and working (see [providers](shared/providers.md)). **Grant per-project write/trust now:** run each configured CLI **once inside this repo** so it can operate there later — a common cause of later gate failures is skipping this one-time grant.
 - Note whether a code-intelligence index covers the repo; if not, recommend enabling one.
 
 ### 2. Gather inputs
@@ -37,7 +37,7 @@ Onboards a new codebase into the vault. **Runs as a guided installation** — it
 - **Default branch**.
 - **Worktree root** — where per-ticket worktrees live. Default `<repo>/.worktrees`. **Remind the user** that if it sits inside the repo, they must gitignore it (the workflow does not edit their ignore rules).
 - Whether a **code-intelligence index** is available.
-- The repo's top-level module layout → seeds the **scope map** in [[commit]].
+- The repo's top-level module layout → seeds the **scope map** in [commit](commit.md).
 
 ### 3. Record provenance
 
@@ -56,7 +56,7 @@ projects/<name>/
 
 ### 5. Explore and document
 
-Using the code index where available (else targeted reads), study structure, stack, architecture, key patterns, conventions, and testing. Create `wiki/overview.md` first, then pages as warranted: `architecture.md`, `data-model.md`, `api.md`, `key-patterns.md`, `code-conventions.md`, `testing-conventions.md`, `dependencies.md`, `open-questions.md`, plus subsystem pages. Each gets `commit:` frontmatter. **Record the project's commit convention and its scope map** (a list of `path/prefix/* → scope` rules from the repo's module layout) in this project's `code-conventions.md` — the [[commit]] skill reads it from there per project.
+Using the code index where available (else targeted reads), study structure, stack, architecture, key patterns, conventions, and testing. Create `wiki/overview.md` first, then pages as warranted: `architecture.md`, `data-model.md`, `api.md`, `key-patterns.md`, `code-conventions.md`, `testing-conventions.md`, `dependencies.md`, `open-questions.md`, plus subsystem pages. Each gets `commit:` frontmatter. **Record the project's commit convention and its scope map** (a list of `path/prefix/* → scope` rules from the repo's module layout) in this project's `code-conventions.md` — the [commit](commit.md) skill reads it from there per project.
 
 ### 6. Generate personas
 
@@ -73,7 +73,7 @@ Add a Projects subsection to `index.md` linking the new pages; append an `ingest
 - [ ] `index.md` and `log.md` reference every page created.
 - [ ] The `project-registry.md` row is complete (repo path, code index, worktree root, commit, scan date, page count).
 - [ ] Configured CLIs have been run once in the repo (write/trust granted).
-- [ ] Anchor-link lint is clean: `grep -rnE '\]\([^)]*#[^)]+\)' --include='*.md' .`
+- [ ] Link lint is clean (standard Markdown links only, no stray wikilinks): `grep -rnE '\[\[' --include='*.md' .`
 
 Report the result as an installation summary: **✓ Project `<name>` installed** — what was created, and the next steps (run a ticket, refresh later via Update Codebase).
 
@@ -81,4 +81,4 @@ Report the result as an installation summary: **✓ Project `<name>` installed**
 
 - **Update Codebase** (in `CLAUDE.md`) refreshes an already-added project incrementally via `git diff` against the last scanned commit — use that, not this skill, once a project exists.
 - **Ticket Workflow** (`skills/ticket-workflow.md`) and the architects/engineers generated here drive day-to-day ticketed work.
-- Wiki harvest and all page edits stay the **Curator**'s responsibility ([[ticket-curation]]).
+- Wiki harvest and all page edits stay the **Curator**'s responsibility ([ticket-curation](ticket-curation.md)).

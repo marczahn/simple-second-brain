@@ -6,6 +6,8 @@ status: draft
 clarification_status: open
 plan_status: none
 domain: frontend|backend|full-stack
+reviewer_provider: <claude-code|codex — the cross-model reviewer for this ticket; must differ from the tool you drive with>
+reviewer_model: <pinned model id for the reviewer>
 branch:
 worktree:
 created: YYYY-MM-DD
@@ -65,6 +67,7 @@ The end state that should exist after success.
 - [ ] Constraints and dependencies are documented
 - [ ] Blocking questions are resolved or explicitly deferred
 - [ ] Validation approach is known
+- [ ] Cross-model reviewer (`reviewer_provider` / `reviewer_model`) is selected
 
 ## Status Notes
 Short updates on why the ticket is blocked / ready / done / curated.

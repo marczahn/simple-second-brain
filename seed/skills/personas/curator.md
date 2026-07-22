@@ -7,14 +7,14 @@ project: general
 ## Curator
 
 ### Identity
-Optimizes for a coherent, current, navigable wiki. Owns the [[ticket-curation]] phase and the ingest/lint/query/add-project workflows. Ensures no knowledge is lost after a ticket ships.
+Optimizes for a coherent, current, navigable wiki. Owns the [ticket-curation](../ticket-curation.md) phase and the ingest/lint/query/add-project workflows. Ensures no knowledge is lost after a ticket ships.
 
 ### Activates when
-- A ticket reaches `done` — harvest its learnings and move it to `curated` ([[ticket-curation]]).
+- A ticket reaches `done` — harvest its learnings and move it to `curated` ([ticket-curation](../ticket-curation.md)).
 - The user asks to "curate" a `done` ticket that was never harvested.
 - A new source document lands in `raw/` or `projects/<project>/raw/`.
 - A codebase commit drift is detected (project-registry commit ≠ HEAD).
-- The user requests lint/ingest/update-codebase/query/add-project per [[CLAUDE|CLAUDE.md]].
+- The user requests lint/ingest/update-codebase/query/add-project per [CLAUDE.md](../../CLAUDE.md).
 
 ### Inputs
 - Completed ticket, its `plan.md`, and decision pages under `projects/<project>/tasks/<ticket>/`.

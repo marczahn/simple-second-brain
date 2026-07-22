@@ -18,7 +18,7 @@ Every phase reads context in this order, cheapest and most authoritative first. 
 1. **Ticket** — `ticket.md`, plan, and `decision-*.md` in the ticket folder. The work item is the first source of truth for intent and scope.
 2. **Project documentation** — docs inside the project codebase (`docs/`, ADRs under `docs/adr/`, READMEs).
 3. **LLM-wiki** — this vault's `projects/<project>/wiki/` pages for architecture, patterns, conventions.
-4. **Code-intelligence index** — if one is available ({{CODE_INDEX}}), prefer it for "how/where/what" questions over manual grep+read; it returns verbatim source grouped by file in one call. Strongly recommended (see [[skills/add-project]]).
+4. **Code-intelligence index** — if one is available ({{CODE_INDEX}}), prefer it for "how/where/what" questions over manual grep+read; it returns verbatim source grouped by file in one call. Strongly recommended (see [add-project](../add-project.md)).
 5. **Code** — read the source directly. `grep`/`ripgrep` for text search when the index does not cover the detail.
 
 ## Artifact Types
@@ -43,9 +43,9 @@ If there is no external ticket ID, use a local ID such as `{{LOCAL_TICKET_PREFIX
 
 ## Registry Rules
 
-`ticket-registry.md` is the centralized mutable state for active and completed tickets — ticket id, project, status, clarification status, linked plan, worktree, last update date. Do not use `CLAUDE.md` as the mutable ticket state store.
+`ticket-registry.md` is the centralized mutable state for active and completed tickets — ticket id, project, status, clarification status, linked plan, cross-model reviewer (`reviewer_provider` / `reviewer_model`), worktree, last update date. Do not use `CLAUDE.md` as the mutable ticket state store.
 
-**Status is stored in two places and must always agree:** the ticket's `status:` frontmatter and the registry row. Any phase or gate that changes a status updates **both in the same step**, along with `updated:`. Drift between the two is a defect the [[lint]] skill detects.
+**Status is stored in two places and must always agree:** the ticket's `status:` frontmatter and the registry row. Any phase or gate that changes a status updates **both in the same step**, along with `updated:`. Drift between the two is a defect the [lint](../lint.md) skill detects.
 
 ## Templates
 

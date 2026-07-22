@@ -72,20 +72,18 @@ commit: <short hash of the codebase commit at time of writing — project pages 
 
 # Page Title
 
-Content. Use [[wikilinks]] for cross-references.
+Content. Use standard Markdown links (`[label](relative/path.md)`) for cross-references.
 ```
 
 The `commit:` field records which codebase commit a project page was written against, enabling incremental refresh.
 
-### Wikilinks
+### Links
 
-- `[[Page Title]]` for cross-references between wiki pages.
-- From outside a project dir: `[[projects/<project>/wiki/Page Title]]`.
-- This is an **Obsidian vault**: heading links use Obsidian syntax, never GitHub `#kebab-case` anchors.
-  - Same file: `[[#Exact Heading Text]]` (alias: `[[#Exact Heading|label]]`).
-  - Cross file: `[[Note Name#Exact Heading|label]]` — bare filename, no path, no `.md`.
-  - Heading text must match exactly, including capitalization.
-  - Lint: `grep -rnE '\]\([^)]*#[^)]+\)' --include='*.md' .` should return nothing.
+Cross-references use **standard (CommonMark) Markdown links** — `[label](relative/path.md)` — not Obsidian wikilinks (the double-square-bracket form). Plain Markdown links are portable: a Git host, a plain editor, and Obsidian all resolve them identically.
+
+- **Path is relative to the file the link lives in**, and always includes the `.md` extension: a sibling page is `[data model](data-model.md)`; a file one directory up is `[index](../index.md)`; add one `../` per directory between the two files.
+- **Heading anchors use GitHub-style slugs**: lower-case the heading, drop punctuation, turn spaces into `-`. `## Cross-Model Review Gate` → `[review gate](ticket-gates.md#cross-model-review-gate)`; a heading in the same file → `[bar](#minimum-quality-bar)`.
+- Lint (no stray wikilinks survive): `grep -rnE '\[\[' --include='*.md' .` should return nothing.
 
 ### Naming
 
@@ -94,16 +92,16 @@ The `commit:` field records which codebase commit a project page was written aga
 
 ## Tooling Profile (this vault)
 
-- **Primary driver:** {{PRIMARY_PROVIDER}} / {{PRIMARY_MODEL}} — headless call: `{{PRIMARY_CLI}}`
-- **Cross-model reviewer (independent gates):** {{REVIEWER_PROVIDER}} / {{REVIEWER_MODEL}} — invoked via `{{REVIEWER_INVOCATION}}`
+- **Providers:** Claude Code and OpenAI Codex are supported; either can author or review (see [providers.md](skills/shared/providers.md)).
+- **Cross-model review:** there is **no fixed reviewer**. The reviewing provider + model is chosen **per ticket** and recorded on the ticket (`reviewer_provider` / `reviewer_model`); it must differ from the tool driving the work.
 - **VCS / host:** {{VCS}} → {{VCS_HOST}} (CLI: `{{HOST_CLI}}`, default branch `{{DEFAULT_BRANCH}}`, auto-reviewer `{{PR_AUTO_REVIEWER}}`)
 - **Ticket system:** {{TICKET_SYSTEM}} (ID pattern `{{TICKET_KEY_PATTERN}}`; access `{{TICKET_ACCESS}}`; local fallback prefix `{{LOCAL_TICKET_PREFIX}}`)
 - **Worktree root (default):** `{{WORKTREE_DEFAULT}}` — per-project override recorded in `project-registry.md`
 - **Code-intelligence index:** {{CODE_INDEX}}
 
-Concrete provider setup, headless invocation patterns, and per-project write-permission notes live in [[skills/shared/providers|providers.md]]. Everything else in the schema is provider-neutral.
+Concrete provider setup, headless invocation patterns, and per-project write-permission notes live in [providers.md](skills/shared/providers.md). Everything else in the schema is provider-neutral.
 
-> **Maintenance:** model IDs age. Every so often, check whether newer models exist for the configured providers and update this Tooling Profile (and `providers.md`) rather than pinning stale IDs forever.
+> **Maintenance:** model IDs age. Every so often, check whether newer models exist for the supported providers so the reviewer you pick per ticket stays current, rather than reaching for a stale ID out of habit.
 
 ## Workflows
 
@@ -170,9 +168,9 @@ Each `projects/<name>/wiki/` should eventually contain: `overview.md`, `architec
 
 ## Index / Log / Registry Formats
 
-- `index.md`: entries grouped by category — `- [[Page Title]] — one-line description (N sources)`.
+- `index.md`: entries grouped by category — `- [Page Title](relative/path.md) — one-line description (N sources)`.
 - `log.md`: append-only — `## [YYYY-MM-DD] action | Subject` then a description. Actions: `ingest`, `query`, `lint`, `update`, `create`, `curate`.
 - `project-registry.md`: per-project repo path (referenced, never copied), code-index availability, worktree root, last scan date, last scanned commit, page count, overview link.
-- `ticket-registry.md`: per-ticket id, project, status, clarification status, linked plan, worktree, updated date.
+- `ticket-registry.md`: per-ticket id, project, status, clarification status, linked plan, cross-model reviewer (provider/model), worktree, updated date.
 
 Mutable state lives in the registries and log — **never** in this schema file.

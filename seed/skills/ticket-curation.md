@@ -11,9 +11,9 @@ updated: <today>
 
 **Owner:** Curator (`skills/personas/curator.md`).
 **Consumes:** a `done` ticket. **Produces:** a `curated` ticket + harvested wiki knowledge.
-**Shared infra:** [[ticket-status-model]], [[ticket-conventions]] (knowledge sources, registry). Entry point: [[ticket-workflow]].
+**Shared infra:** [ticket-status-model](shared/ticket-status-model.md), [ticket-conventions](shared/ticket-conventions.md) (knowledge sources, registry). Entry point: [ticket-workflow](ticket-workflow.md).
 
-Curation is a **first-class phase**, not a footnote to shipping. Splitting it out (and giving `done` and `curated` distinct statuses) means a shipped-but-unharvested ticket is visible and resumable: re-invoking [[ticket-workflow]] on a `done` ticket dispatches straight here. The [[lint]] skill flags `done`-but-not-`curated` tickets so nothing quietly falls through.
+Curation is a **first-class phase**, not a footnote to shipping. Splitting it out (and giving `done` and `curated` distinct statuses) means a shipped-but-unharvested ticket is visible and resumable: re-invoking [ticket-workflow](ticket-workflow.md) on a `done` ticket dispatches straight here. The [lint](lint.md) skill flags `done`-but-not-`curated` tickets so nothing quietly falls through.
 
 **Trigger:** a ticket reaches `done`, or the user asks to "curate ticket X" / "harvest the learnings" at any later time.
 

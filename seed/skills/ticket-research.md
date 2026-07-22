@@ -10,8 +10,8 @@ updated: <today>
 # Ticket Research — Phase 1
 
 **Owner:** Business Analyst (`skills/personas/business-analyst.md`)
-**Consumes:** user intent or a ticket-system ID. **Produces:** a `ready` `ticket.md` with `domain:` set.
-**Shared infra:** [[ticket-status-model]], [[ticket-conventions]] (knowledge sources, naming, registry, templates). Entry point: [[ticket-workflow]].
+**Consumes:** user intent or a ticket-system ID. **Produces:** a `ready` `ticket.md` with `domain:` and the cross-model reviewer set.
+**Shared infra:** [ticket-status-model](shared/ticket-status-model.md), [ticket-conventions](shared/ticket-conventions.md) (knowledge sources, naming, registry, templates). Entry point: [ticket-workflow](ticket-workflow.md).
 
 The goal of this phase is clarity before commitment. No plan, no code — only a well-defined work item. Think deeply about the problem and the shape of the solution before writing.
 
@@ -20,13 +20,14 @@ The goal of this phase is clarity before commitment. No plan, no code — only a
 1. **Pull the source.**
    - If a ticket-system ID is provided (matching `{{TICKET_KEY_PATTERN}}`), fetch it via `{{TICKET_ACCESS}}`. Read summary, description, comments, and linked issues.
    - Otherwise, take the user's described task as the input.
-2. **Gather context** in the [[ticket-conventions#Knowledge Sources|knowledge-source order]]: ticket → project docs → llm-wiki → code-intelligence index → code (`grep`). Understand what exists, what the change touches, and where the risks are.
+2. **Gather context** in the [knowledge-source order](shared/ticket-conventions.md#knowledge-sources): ticket → project docs → llm-wiki → code-intelligence index → code (`grep`). Understand what exists, what the change touches, and where the risks are.
 3. **Think through problem and solution.** Restate vague goals as observable outcomes. Separate confirmed facts from assumptions. Sketch the solution direction far enough to expose ambiguities — but do not design the implementation (that is Planning).
 4. **Create the ticket** from `skills/templates/ticket-template.md` at `projects/<project>/tasks/<TICKET-ID-short-title>/ticket.md`. Fill problem, desired outcome, in/out scope, constraints, dependencies, and **testable** acceptance criteria.
 5. **Set `domain:`** — `frontend` (UI/components/styles), `backend` (API/DB/sync), or `full-stack` (both). This routes Planning and Execution.
-6. **Clarify ambiguities.** List blocking questions directly in the ticket — short, concrete, decision-oriented. Identify who/what resolves each. Keep the ticket `blocked` while any blocking question is open.
-7. **Run the readiness gate.** Mark the ticket `ready` (clarification `resolved`) only when every condition below is true.
-8. **Write the status** (`ready`, clarification `resolved`, `domain:`) to **both** the ticket frontmatter and `ticket-registry.md` — same step, with `updated:`.
+6. **Choose the cross-model reviewer.** Ask the user which provider + model should review this ticket's plan and code, and record it on the ticket (`reviewer_provider` / `reviewer_model`). **Pre-select a genuine cross-model default** — a provider different from the tool you are driving with; a same-provider reviewer does not satisfy the gate. See [providers#Choosing the reviewer (per ticket)](shared/providers.md#choosing-the-reviewer-per-ticket).
+7. **Clarify ambiguities.** List blocking questions directly in the ticket — short, concrete, decision-oriented. Identify who/what resolves each. Keep the ticket `blocked` while any blocking question is open.
+8. **Run the readiness gate.** Mark the ticket `ready` (clarification `resolved`) only when every condition below is true.
+9. **Write the status** (`ready`, clarification `resolved`, `domain:`) and the chosen reviewer to **both** the ticket frontmatter and `ticket-registry.md` — same step, with `updated:`.
 
 ## Readiness Gate
 
@@ -40,6 +41,7 @@ A ticket is `ready` only if all are true:
 - Constraints and dependencies are documented.
 - Blocking questions are resolved or explicitly deferred.
 - The validation approach is known.
+- A cross-model reviewer (`reviewer_provider` / `reviewer_model`) is selected and recorded.
 
 If any is missing, the output is not a ticket-ready handoff — it is another clarification pass.
 
@@ -51,4 +53,4 @@ If any is missing, the output is not a ticket-ready handoff — it is another cl
 
 ## Handoff
 
-Ticket `ready`, clarification `resolved`, `domain:` set, registry updated → hand to [[ticket-planning]].
+Ticket `ready`, clarification `resolved`, `domain:` set, registry updated → hand to [ticket-planning](ticket-planning.md).

@@ -17,7 +17,7 @@ Exactly what this plan delivers.
 - Ticket clarification status is `resolved`
 - Ticket status is `ready`
 - Required access, tools, and context are available
-- No worktree is needed for planning — the ticket worktree is created at **execution** start (see [[ticket-worktrees#Worktree Per Ticket]]), not here
+- No worktree is needed for planning — the ticket worktree is created at **execution** start (see [ticket-worktrees#Worktree Per Ticket](../../../../skills/shared/ticket-worktrees.md#worktree-per-ticket)), not here
 
 ## Scope Reference
 - Source ticket:

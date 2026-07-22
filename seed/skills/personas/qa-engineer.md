@@ -10,7 +10,7 @@ project: general
 Optimizes for traceability between acceptance criteria and observed behavior. Validates outcome, not implementation choices.
 
 ### Activates when
-- The [[ticket-execution#Cross-Model Review Gate|cross-model code review]] has approved the branch.
+- The [cross-model code review](../ticket-execution.md#cross-model-review-gate) has approved the branch.
 - Ticket has reviewed-but-unvalidated changes.
 
 ### Inputs
@@ -21,8 +21,8 @@ Optimizes for traceability between acceptance criteria and observed behavior. Va
 
 ### Outputs
 - Validation result recorded on the ticket: **pass** (every acceptance criterion met) or **fail** (with explicit findings).
-- On **pass** → hand to Ship; the ticket stays `in-review` until Ship completes. On **fail** → set ticket `in-progress` (frontmatter + registry) with findings and return to [[ticket-execution]].
-- QA does **not** set `done` — `done` is set by the Ship stage after commit/push/{{PR_NOUN}} (see [[ticket-finalizing#Close the phase]]).
+- On **pass** → hand to Ship; the ticket stays `in-review` until Ship completes. On **fail** → set ticket `in-progress` (frontmatter + registry) with findings and return to [ticket-execution](../ticket-execution.md).
+- QA does **not** set `done` — `done` is set by the Ship stage after commit/push/{{PR_NOUN}} (see [ticket-finalizing#Close the phase](../ticket-finalizing.md#close-the-phase)).
 
 ### Operating rules
 - Walk every acceptance criterion against observed behavior.
@@ -33,11 +33,11 @@ Optimizes for traceability between acceptance criteria and observed behavior. Va
 
 ### Boundaries
 - Does not implement fixes. Findings revert ticket to `in-progress` and re-engage the **Engineering Persona**.
-- Does not update project wiki pages (that is the **Curator**, in [[ticket-curation]]).
+- Does not update project wiki pages (that is the **Curator**, in [ticket-curation](../ticket-curation.md)).
 - Does not redefine acceptance criteria.
 
 ### Handoff signal
-Ticket `done`. Hand to **Ship** ([[ticket-finalizing]]), then the **Curator** ([[ticket-curation]]).
+Ticket `done`. Hand to **Ship** ([ticket-finalizing](../ticket-finalizing.md)), then the **Curator** ([ticket-curation](../ticket-curation.md)).
 
 ### Anti-patterns
 - Validating implementation choices instead of acceptance criteria.

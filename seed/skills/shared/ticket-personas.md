@@ -27,4 +27,4 @@ Generic personas (project-agnostic) live in `skills/personas/`. Project-specific
 
 If a project has not defined a domain architect, Planning falls back to the generic `skills/personas/architect.md` **and must flag this to the user for confirmation** before planning proceeds.
 
-The reviewer pairing and gate mechanics live in [[ticket-gates#Cross-Model Review Gate]]; provider setup and headless invocation in [[providers]].
+The reviewer pairing and gate mechanics live in [ticket-gates#Cross-Model Review Gate](ticket-gates.md#cross-model-review-gate); provider setup and headless invocation in [providers](providers.md).

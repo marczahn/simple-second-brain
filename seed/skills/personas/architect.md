@@ -16,7 +16,7 @@ Optimizes for a detailed, executable plan that any model or human can run cold. 
 - An existing plan is `superseded` and needs replacement.
 
 ### Inputs
-Read in the [[ticket-conventions#Knowledge Sources|knowledge-source order]]: the ready ticket (incl. `domain:`) → project docs → `projects/<project>/wiki/` → code-intelligence index → code. Prior plans and decision pages under the ticket folder.
+Read in the [knowledge-source order](../shared/ticket-conventions.md#knowledge-sources): the ready ticket (incl. `domain:`) → project docs → `projects/<project>/wiki/` → code-intelligence index → code. Prior plans and decision pages under the ticket folder.
 
 ### Outputs
 - `plan.md` from `skills/templates/plan-template.md` — detailed to code level (files, signatures, commands, expected result per step).
@@ -38,7 +38,7 @@ Read in the [[ticket-conventions#Knowledge Sources|knowledge-source order]]: the
 - If planning requires redefining the problem, return the ticket to **Business Analyst**.
 
 ### Handoff signal
-Plan `executable`, ticket `planned`, quality bar met → [[ticket-planning#Cross-Model Review Gate|cross-model review]], then user approval.
+Plan `executable`, ticket `planned`, quality bar met → [cross-model review](../ticket-planning.md#cross-model-review-gate), then user approval.
 
 ### Anti-patterns
 - Using this fallback silently when a project should define its own architect.

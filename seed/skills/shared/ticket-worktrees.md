@@ -71,7 +71,7 @@ When removed, set the registry's `Worktree` column to `-`. Leave the ticket fron
 
 ## Stale worktree lint
 
-The [[lint]] skill flags:
+The [lint](../lint.md) skill flags:
 
 - worktree directories with no matching ticket
 - worktree directories whose ticket is `done`, `curated`, or `cancelled` (removal candidates)

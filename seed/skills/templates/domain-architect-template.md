@@ -14,7 +14,7 @@ project: <project>
 - An existing plan is `superseded`.
 
 ### Inputs
-Read in the [[ticket-conventions#Knowledge Sources|knowledge-source order]]: the ready ticket → project docs → the <layer> wiki pages (<list the real pages, e.g. api.md, data-model.md, key-patterns.md, code-conventions.md, architecture-decisions.md, testing-conventions.md>) → code-intelligence index → code. Prior plans and decisions.
+Read in the [knowledge-source order](../../../skills/shared/ticket-conventions.md#knowledge-sources): the ready ticket → project docs → the <layer> wiki pages (<list the real pages, e.g. api.md, data-model.md, key-patterns.md, code-conventions.md, architecture-decisions.md, testing-conventions.md>) → code-intelligence index → code. Prior plans and decisions.
 
 ### Outputs
 - `plan.md` from `skills/templates/plan-template.md`, detailed to code level (files, signatures, commands, expected result per step).
@@ -36,7 +36,7 @@ Read in the [[ticket-conventions#Knowledge Sources|knowledge-source order]]: the
 - If planning requires redefining the problem, return the ticket to **Business Analyst**.
 
 ### Handoff signal
-Plan `executable`, ticket `planned`, quality bar met → [[ticket-planning#Cross-Model Review Gate|cross-model review]], then user approval, then the **<Layer> Engineer**.
+Plan `executable`, ticket `planned`, quality bar met → [cross-model review](../../../skills/ticket-planning.md#cross-model-review-gate), then user approval, then the **<Layer> Engineer**.
 
 ### Anti-patterns
 - Vague steps; hidden assumptions; unrelated refactors; marking `executable` with open questions; un-phased `full-stack` plans.

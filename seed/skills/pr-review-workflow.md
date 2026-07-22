@@ -9,7 +9,7 @@ updated: <today>
 
 # {{PR_NOUN}} Review Workflow
 
-Reviews a {{VCS_HOST}} {{PR_NOUN}} as the [[principal-engineer-reviewer|Principal Engineer Reviewer]], with the linked ticket in mind, and posts findings back — but only after a human picks which findings to post. This is **separate** from the ticket workflow.
+Reviews a {{VCS_HOST}} {{PR_NOUN}} as the [Principal Engineer Reviewer](personas/principal-engineer-reviewer.md), with the linked ticket in mind, and posts findings back — but only after a human picks which findings to post. This is **separate** from the ticket workflow.
 
 > If the user has no forge / no {{PR_NOUN}}s, keep Stage 1 as a **local diff review** that writes the review doc, and drop Stage 2 (posting).
 
@@ -51,4 +51,4 @@ The user checks `[x]` the findings to post (and may edit text). Mandatory — St
 ## Notes
 
 - Idempotency: check existing comments first; skip findings already posted verbatim.
-- Wiki promotion of insights stays the **Curator**'s job ([[ticket-curation]]), only if the user asks.
+- Wiki promotion of insights stays the **Curator**'s job ([ticket-curation](ticket-curation.md)), only if the user asks.

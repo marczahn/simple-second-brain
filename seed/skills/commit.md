@@ -9,9 +9,9 @@ updated: <today>
 
 # Commit
 
-Create one or more commits from the current uncommitted changes, logically grouped by functionality, using **Conventional Commits**. Called by the Ship stage of [[ticket-finalizing]], and usable standalone whenever the user asks to "commit".
+Create one or more commits from the current uncommitted changes, logically grouped by functionality, using **Conventional Commits**. Called by the Ship stage of [ticket-finalizing](ticket-finalizing.md), and usable standalone whenever the user asks to "commit".
 
-> **Adjust this skill to your project.** The commit *type* vocabulary here is standard and global. The **scope map is per-project** — it lives in each project's `projects/<project>/wiki/code-conventions.md` (written during [[skills/add-project]] from the repo's module layout), **not** in this file. This skill reads the active project's map at commit time, so multiple projects never collide.
+> **Adjust this skill to your project.** The commit *type* vocabulary here is standard and global. The **scope map is per-project** — it lives in each project's `projects/<project>/wiki/code-conventions.md` (written during [add-project](add-project.md) from the repo's module layout), **not** in this file. This skill reads the active project's map at commit time, so multiple projects never collide.
 
 ## Workflow
 

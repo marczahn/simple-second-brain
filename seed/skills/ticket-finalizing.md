@@ -11,9 +11,9 @@ updated: <today>
 
 **Owners:** QA Engineer (`skills/personas/qa-engineer.md`), then Engineering persona (ship).
 **Consumes:** an `in-review`, cross-model-reviewed implementation. **Produces:** a `done`, shipped ticket.
-**Shared infra:** [[ticket-status-model]], [[ticket-conventions]] (knowledge sources, registry), [[ticket-worktrees]] (ship stage). Entry point: [[ticket-workflow]].
+**Shared infra:** [ticket-status-model](shared/ticket-status-model.md), [ticket-conventions](shared/ticket-conventions.md) (knowledge sources, registry), [ticket-worktrees](shared/ticket-worktrees.md) (ship stage). Entry point: [ticket-workflow](ticket-workflow.md).
 
-This phase validates and ships. It ends at `done`. **Knowledge harvesting happens in the separate [[ticket-curation]] phase** — a `done` ticket is not finished until it is `curated`.
+This phase validates and ships. It ends at `done`. **Knowledge harvesting happens in the separate [ticket-curation](ticket-curation.md) phase** — a `done` ticket is not finished until it is `curated`.
 
 ## Stage A — QA Engineer
 
@@ -23,15 +23,15 @@ Validates the outcome against the ticket, not the implementation choices.
 2. Walk **every acceptance criterion** against observed behavior. Run the plan's validation/test commands.
 3. Verify ADRs were amended where the plan or deviations imply a behavior change.
 4. Record findings on the ticket. Do not fix issues.
-5. If every criterion passes → proceed to Ship. Otherwise → set ticket `in-progress` (frontmatter + registry) with explicit findings and return to [[ticket-execution]].
+5. If every criterion passes → proceed to Ship. Otherwise → set ticket `in-progress` (frontmatter + registry) with explicit findings and return to [ticket-execution](ticket-execution.md).
 
 ## Stage B — Ship
 
-Runs only after QA passes. Operates in the ticket's worktree on its own branch (see [[ticket-worktrees#Worktree Per Ticket]]). Owned by the Engineering persona.
+Runs only after QA passes. Operates in the ticket's worktree on its own branch (see [ticket-worktrees#Worktree Per Ticket](shared/ticket-worktrees.md#worktree-per-ticket)). Owned by the Engineering persona.
 
 ### Committing
 
-Delegate to the [[commit]] skill: it groups the worktree changes into logical batches and writes conventional-commit messages following the project's convention (recorded in the project's `code-conventions.md`). **Never mention AI assistance in a commit message.** Reference the ticket ID where the convention calls for it; omit it if there is no ticket ID.
+Delegate to the [commit](commit.md) skill: it groups the worktree changes into logical batches and writes conventional-commit messages following the project's convention (recorded in the project's `code-conventions.md`). **Never mention AI assistance in a commit message.** Reference the ticket ID where the convention calls for it; omit it if there is no ticket ID.
 
 ### Pushing
 
@@ -59,9 +59,9 @@ Set ticket `done`, plan `done` (frontmatter + registry, same step). **Do not set
 
 - QA does not implement fixes or edit wiki pages.
 - Ship does not change code behavior — only commits, pushes, and opens the {{PR_NOUN}}. No commit message mentions AI.
-- This phase does **not** promote learnings to the wiki — that is [[ticket-curation]].
+- This phase does **not** promote learnings to the wiki — that is [ticket-curation](ticket-curation.md).
 - Does not remove the worktree — cleanup is manual, by the user.
 
 ## Handoff
 
-Ticket `done`, changes committed/pushed, {{PR_NOUN}} open (with auto-review requested if configured), status written to frontmatter + registry → hand to [[ticket-curation]].
+Ticket `done`, changes committed/pushed, {{PR_NOUN}} open (with auto-review requested if configured), status written to frontmatter + registry → hand to [ticket-curation](ticket-curation.md).

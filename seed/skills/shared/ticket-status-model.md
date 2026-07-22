@@ -9,7 +9,7 @@ updated: <today>
 
 # Ticket Status Model
 
-Shared status vocabularies for ticketed work. Phase skills set and read these; the composer ([[ticket-workflow]]) dispatches by ticket status. **Every phase and gate that changes a status must write it in both the ticket frontmatter and `ticket-registry.md` in the same step** — see [[ticket-conventions#Registry Rules]]. The [[lint]] skill reconciles the two.
+Shared status vocabularies for ticketed work. Phase skills set and read these; the composer ([ticket-workflow](../ticket-workflow.md)) dispatches by ticket status. **Every phase and gate that changes a status must write it in both the ticket frontmatter and `ticket-registry.md` in the same step** — see [ticket-conventions#Registry Rules](ticket-conventions.md#registry-rules). The [lint](../lint.md) skill reconciles the two.
 
 ## Ticket Status
 - `draft` — initial capture
@@ -22,7 +22,7 @@ Shared status vocabularies for ticketed work. Phase skills set and read these; t
 - `curated` — learnings harvested into the wiki; terminal
 - `cancelled` — intentionally stopped or superseded; terminal
 
-`done` and `curated` are **distinct on purpose**: `done` means the work shipped and passed QA; `curated` means the knowledge was promoted to the wiki. A `done`-but-not-`curated` ticket is an unfinished tail the [[lint]] skill flags and the composer can resume by dispatching to [[ticket-curation]].
+`done` and `curated` are **distinct on purpose**: `done` means the work shipped and passed QA; `curated` means the knowledge was promoted to the wiki. A `done`-but-not-`curated` ticket is an unfinished tail the [lint](../lint.md) skill flags and the composer can resume by dispatching to [ticket-curation](../ticket-curation.md).
 
 ## Clarification Status
 - `open` — unresolved blocking questions exist

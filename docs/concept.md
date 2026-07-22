@@ -58,7 +58,9 @@ file layout.
 
 Work reviewed only by its author inherits the author's blind spots. So the lifecycle has **two** cross-provider
 review gates, each run by a **second model on a different provider** (this vault pairs **Claude Code** and
-**OpenAI Codex**):
+**OpenAI Codex**). You **choose the reviewer per ticket** — at ticket start you pick the provider + model, and it's
+recorded on the ticket; the default is always a genuine cross-model choice (a provider different from the one
+you're driving). There is no fixed vault-wide reviewer, so it's easy to vary per piece of work:
 
 - **Plan review** — before any plan reaches you, a different model (acting as the Business Analyst) checks it
   for non-executable steps, missing acceptance-criteria coverage, and scope drift.
@@ -71,6 +73,24 @@ form is reliable and autonomous. The reviewer returns findings and a verdict; **
 to ask you something. And if a reviewer provider is missing or unauthorized at gate time, the main agent stops
 and asks you to fix it — it never silently skips the gate. The *plan* also always passes a hard **human approval
 gate** before any code is written.
+
+## Not a deterministic tool
+
+It helps to be clear about what this is. Simple Second Brain is **not a program that runs deterministically** —
+there is no engine, no compiled logic, no guaranteed output. It is a **prompt-driven workflow harness**: a set of
+plain-Markdown instructions (schema, skills, personas, templates) that steer an AI agent through a repeatable
+process. The agent interprets those instructions and does the actual work, which means:
+
+- **Results depend on the model.** A stronger model produces better plans, reviews, and wiki pages; a weaker one
+  produces weaker ones. Swapping the model changes the behavior.
+- **It is not reproducible run-to-run.** Ask twice and you may get two different (both reasonable) plans. That is
+  normal for LLM-driven work, not a bug.
+- **The structure is the whole point.** The five phases, the two independent review gates, the registries, and the
+  `lint` skill exist to impose checkpoints, hand-off contracts, and guardrails *on top of* inherently probabilistic
+  behavior — to make it repeatable and reviewable, not to make it deterministic.
+
+So treat it as a disciplined workflow you drive an AI through — you stay in the loop, approve the plan, and do the
+merges — not as a tool that will do the exact same thing every time on its own.
 
 ## Opinionated by design
 

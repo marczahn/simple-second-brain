@@ -6,13 +6,14 @@ from the real files under [`seed/`](../seed/).
 
 ## Prerequisites
 
-- **An agentic AI coding tool** — **Claude Code** or **OpenAI Codex CLI**. This is your *primary* driver.
+- **An agentic AI coding tool** — **Claude Code** or **OpenAI Codex CLI**. This is the tool you drive with.
 - **`git`** — the default ticket workflow uses one isolated worktree per ticket. (Not on git? Tell the installer
   during the interview and it swaps in a plain branch-per-ticket flow.)
 - **A second provider** — for the cross-provider review gates (the plan *and* the code are each reviewed by a
-  different model). This vault pairs **Claude Code ↔ Codex**. The reviewer must be a *different* provider than
-  the author. Its CLI must be **installed and working** — the gates are core, not optional. You must also run
-  each chosen CLI **once inside each repo** to grant it write/trust there.
+  different model). This vault pairs **Claude Code ↔ Codex**. You **pick the reviewer per ticket** (defaulting to a
+  provider different from the one you're driving), so at least one provider besides your driver must be
+  **installed and working** — the gates are core, not optional. You must also run each provider CLI you use
+  **once inside each repo** to grant it write/trust there.
 
 Optional but recommended:
 
@@ -21,7 +22,7 @@ Optional but recommended:
 - **A code-host CLI** — `gh` (GitHub) or `glab` (GitLab), authenticated, for the PR/MR review and ship steps.
 - **A ticket system** — Jira, GitHub/GitLab Issues, Linear, … reachable via MCP, a CLI, or its API. No ticket
   system? The vault uses local Markdown tickets (`TASK-001`).
-- **[Obsidian](https://obsidian.md)** — for `[[wikilinks]]` and graph view. The vault is just Markdown, so any
+- **[Obsidian](https://obsidian.md)** — for link navigation and graph view (it follows the standard Markdown links the vault uses). The vault is just Markdown, so any
   editor works.
 
 ## Steps
@@ -41,7 +42,7 @@ Optional but recommended:
 Have rough answers ready — each comes with advice and a default during the interview:
 
 1. **Install location & name** — an empty folder path, and what to call the vault. (Asked first.)
-2. **Providers & models** — your primary (Claude Code or Codex) and model, and the *other* provider + model for the review gates.
+2. **Providers** — which provider CLIs you have available (Claude Code / Codex). Nothing is pinned vault-wide; the cross-model reviewer is chosen **per ticket**, defaulting to a provider different from the one you're driving.
 3. **Version control** — usually `git`; your default branch (`main`/`master`/`trunk`).
 4. **Code host** — GitHub / GitLab / … its CLI (`gh`/`glab`), and any auto-reviewer bot to request on PRs.
 5. **Ticket system** — which one (or none), the ticket-ID pattern, and how to reach it.

@@ -17,7 +17,7 @@ Reviews a {{PR_NOUN}} like a principal engineer: not just "is this correct" but 
 Holds the bar high but pragmatic: convention is the default; deviation is allowed when it genuinely makes sense — and when it deviates, say why it is or isn't justified rather than reflexively flagging.
 
 ### Activates when
-- The user runs the [[pr-review-workflow]] against a {{PR_NOUN}} URL.
+- The user runs the [pr-review-workflow](../pr-review-workflow.md) against a {{PR_NOUN}} URL.
 
 ### Inputs
 - The {{PR_NOUN}}: metadata, full diff, changed files, existing comments.

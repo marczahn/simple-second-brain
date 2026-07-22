@@ -12,13 +12,19 @@ your codebases and runs your ticketed work through a repeatable lifecycle:
 It's all text. No app, no database, no lock-in. Once installed, you mostly call the `ticket-workflow` skill
 with a ticket and let the system drive.
 
+> **What it is — and isn't.** This is **not a deterministic tool**. There's no engine or compiled logic; the
+> "code" is Markdown — a schema, skills, and personas that **steer an AI agent** through a repeatable lifecycle.
+> *The AI does the work*, so results depend on the model you point at it and won't be identical run to run. The
+> phases, gates, and registries exist to add structure, checkpoints, and guardrails **on top of** that inherently
+> non-deterministic behavior — not to remove it. Think disciplined workflow for an LLM, not a push-button app.
+
 ## Features
 
 - **Installs from one prompt** — no package to install; point your AI tool at [`bootstrap.md`](bootstrap.md) and answer the interview. It writes the vault from the real files under [`seed/`](seed/).
 - **LLM-maintained wiki** — the AI writes and refreshes the knowledge base; you curate sources and approve work.
 - **Codebase-aware** — documents real repos, referenced by path (never copied in), pinned to a commit and refreshable incrementally via `git diff`.
 - **Composed five-phase ticket lifecycle** — a thin composer dispatches five self-contained phase skills (research → planning → execution → finalizing → **curation**), each owned by a named persona, so a different model can pick up cold. `done` (shipped) and `curated` (harvested) are distinct statuses, so nothing falls through the cracks.
-- **Two cross-provider review gates** — the *plan* and the *code* are each reviewed by a *different* model than the one that produced them, run **non-interactively** so they don't stall. Supports **Claude Code** and **OpenAI Codex** as interchangeable author/reviewer.
+- **Two cross-provider review gates** — the *plan* and the *code* are each reviewed by a *different* model than the one that produced them, run **non-interactively** so they don't stall. Supports **Claude Code** and **OpenAI Codex** as interchangeable author/reviewer, and you **pick the reviewer per ticket** (defaulting to a provider different from the one you're driving) rather than pinning one vault-wide.
 - **Architects plan, engineers execute** — each project gets domain-specific architect and engineer personas, plus generic personas (analyst, QA, curator, PR reviewer) shared across projects.
 - **Self-healing state** — a `lint` skill reconciles ticket status between the ticket and the registry and flags un-curated `done` tickets, so forgotten transitions surface instead of rotting.
 - **Tool-neutral** — works with whatever models, Git host, ticket system, and (optional but recommended) code-intelligence index you actually use.
