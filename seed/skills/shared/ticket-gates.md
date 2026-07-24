@@ -33,7 +33,19 @@ Both Planning and Execution end with a mandatory review by a **reviewer agent on
 
 ### Verdict handling
 
-The reviewer returns structured findings and a verdict (**approve** / **revise** with specific changes). The author folds findings into the artifact or records a deliberate dismissal (with reason) on the ticket/decision page, then advances status (writing both frontmatter and registry — see [ticket-conventions#Registry Rules](ticket-conventions.md#registry-rules)).
+The reviewer returns structured findings and a verdict (**approve** / **revise** with specific changes). Each finding carries a **severity** from the standard vocabulary — `blocker` · `major` · `minor` · `nit` · `question` (see [principal-engineer-reviewer#Severity levels](../personas/principal-engineer-reviewer.md#severity-levels)). **Blocking** means `blocker` or `major`; everything else is **non-blocking**.
+
+The author folds findings into the artifact or records a deliberate dismissal (with reason) on the ticket/decision page, then advances status (writing both frontmatter and registry — see [ticket-conventions#Registry Rules](ticket-conventions.md#registry-rules)) — but only when the gate passes under the round budget below.
+
+### Review round budget
+
+The gate runs **at most three review rounds** (one reviewer invocation per round). It is **not** an open loop that repeats until a clean `approve`. This applies to **both** gates — plan review and code review.
+
+- **Round 1** — the author addresses **all** actionable findings (fix, or record a deliberate dismissal with reason), then re-runs the gate.
+- **Rounds 2 and 3** — the author addresses **only blocking findings** (`blocker` / `major`). Non-blocking findings (`minor` / `nit` / `question`) are **not** fixed here — record them on the ticket as deferred follow-ups. From round 2 on, the gate **passes as soon as no blocking findings remain**, even if non-blocking ones do.
+- **After round 3** — if the reviewer still returns `revise` with blocking findings, **stop and hand the decision to the user**. Do not run a fourth round and do not silently advance. Present the outstanding blocking findings and let the user choose how to proceed — accept and advance as-is, keep iterating beyond the budget, re-scope the ticket, or abandon. Record the user's decision on the ticket.
+
+Advance status (plan `peer-reviewed` / ticket `in-review`) **only** when the gate passes (no blocking findings) — never on an unresolved `revise`, unless the user explicitly directs it after round 3.
 
 ### If the reviewer provider is unavailable
 

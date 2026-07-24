@@ -40,7 +40,7 @@ Before a plan is marked `executable`:
 
 Mandatory, before the user sees the plan — mechanics, the per-ticket reviewer, non-interactive invocation, and findings handling in [ticket-gates#Cross-Model Review Gate](shared/ticket-gates.md#cross-model-review-gate). The reviewer runs on the provider + model recorded on the ticket (`reviewer_provider` / `reviewer_model`).
 
-Phase specifics: the reviewer adopts the **Business Analyst** persona (`skills/personas/business-analyst.md`) and validates the plan against the ticket's problem, scope, and acceptance criteria — surfacing gaps, untestable steps, scope drift, and unhandled risks. Reviewer artifacts: `plan.md`, `ticket.md`, decisions, touched code. When findings are resolved, set the plan `peer-reviewed`.
+Phase specifics: the reviewer adopts the **Business Analyst** persona (`skills/personas/business-analyst.md`) and validates the plan against the ticket's problem, scope, and acceptance criteria — surfacing gaps, untestable steps, scope drift, and unhandled risks. Reviewer artifacts: `plan.md`, `ticket.md`, decisions, touched code. Findings are handled within the **three-round budget** ([ticket-gates#Review round budget](shared/ticket-gates.md#review-round-budget)): round 1 addresses all findings, rounds 2–3 only blocking (`blocker`/`major`), and after round 3 the user decides. When the gate passes (no blocking findings remain), set the plan `peer-reviewed`.
 
 ## User Plan Review Gate
 

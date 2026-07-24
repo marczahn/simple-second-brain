@@ -33,7 +33,7 @@ Mandatory, after implementation — mechanics, the per-ticket reviewer, non-inte
 
 Phase specifics: the reviewer adopts the relevant **Engineering persona(s)** for the ticket's `domain:` (project `personas.md`); for `full-stack`, the Backend and Frontend Engineer personas each review their layer. The review validates the diff against conventions, key patterns, ADRs, behavior impact, scope discipline, and test coverage. Reviewer artifacts: persona file(s), `plan.md`, `ticket.md`, and the diff/branch.
 
-If the review returns **revise**, fold the findings in (or record a deliberate dismissal) and re-run the gate. **Only when the branch is clean and the review verdict is approve**, set the ticket `in-review` (frontmatter + registry) and advance to finalizing.
+If the review returns **revise**, fold the findings in (or record a deliberate dismissal) and re-run the gate — within the **three-round budget** ([ticket-gates#Review round budget](shared/ticket-gates.md#review-round-budget)): round 1 addresses all findings, rounds 2–3 only blocking (`blocker`/`major`), and after round 3 the user decides how to proceed. **Only when the branch is clean and the gate passes (no blocking findings remain)**, set the ticket `in-review` (frontmatter + registry) and advance to finalizing.
 
 ## Boundaries
 
