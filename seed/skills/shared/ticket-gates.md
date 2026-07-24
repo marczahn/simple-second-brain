@@ -27,15 +27,17 @@ Both Planning and Execution end with a mandatory review by a **reviewer agent on
 
 ### How the reviewer runs
 
-- **Non-interactive and autonomous.** Invoke the reviewer headless (see [providers#Headless (non-interactive) invocation](providers.md#headless-non-interactive-invocation)) — a one-shot `exec`/`-p` call, **not** a spawned interactive/ACP agent (those stall). The reviewer reads the artifact paths, returns structured findings + a verdict, and never stops to ask questions.
-- **Point, don't paste.** Give it the persona file and the artifact paths (ticket, plan, decisions, touched code) — do not paste full context. Pin the reviewer model so the gate is reproducible. Keep it read-only.
-- **Only the main agent asks the human.** If the reviewer surfaces open questions, the main agent decides whether to fold them in or escalate to the human — the sub-agent itself never blocks on input.
+- **Non-interactive and autonomous.** Invoke the reviewer headless (see [providers#Headless (non-interactive) invocation](providers.md#headless-non-interactive-invocation)) — a one-shot `exec`/`-p` call, **not** a spawned interactive/ACP agent (those stall). The reviewer reads the artifact paths, writes its findings ledger, and never stops to ask questions.
+- **Point, don't paste — both ways.** Give it the persona file and the artifact paths (ticket, plan, decisions, touched code) — do not paste full context in. And do not have it paste full findings back out: the reviewer **writes the full findings to the phase's ledger** (`review-plan.md` / `review-code.md` in the ticket folder, from `skills/templates/review-findings-template.md`) and **returns to the caller only a brief summary** — the verdict, the count of findings by severity, and the ledger path. Nothing else crosses the boundary. This keeps findings off the caller's context on both legs of the trip and, because they are on disk before the caller acts, lets a crashed run resume from the ledger instead of re-invoking the reviewer.
+- **Read-only against the repo; the ledger is the one exception.** The reviewer does not edit code, plans, or any other artifact — it inspects and reports. Its **only** write target is the phase's findings ledger in the ticket folder (vault, not the code repo). The repo/worktree stays untouched.
+- **Pin the model.** Pin the reviewer model so the gate is reproducible.
+- **Only the main agent asks the human.** If the reviewer surfaces open questions, it records them as `question` findings in the ledger and still returns a verdict; the main agent decides whether to fold them in or escalate to the human — the sub-agent itself never blocks on input.
 
 ### Verdict handling
 
-The reviewer returns structured findings and a verdict (**approve** / **revise** with specific changes). Each finding carries a **severity** from the standard vocabulary — `blocker` · `major` · `minor` · `nit` · `question` (see [principal-engineer-reviewer#Severity levels](../personas/principal-engineer-reviewer.md#severity-levels)). **Blocking** means `blocker` or `major`; everything else is **non-blocking**.
+The reviewer writes structured findings to the ledger and returns a verdict (**approve** / **revise**). Each finding carries a **severity** from the standard vocabulary — `blocker` · `major` · `minor` · `nit` · `question` (see [principal-engineer-reviewer#Severity levels](../personas/principal-engineer-reviewer.md#severity-levels)). **Blocking** means `blocker` or `major`; everything else is **non-blocking**.
 
-The author folds findings into the artifact or records a deliberate dismissal (with reason) on the ticket/decision page, then advances status (writing both frontmatter and registry — see [ticket-conventions#Registry Rules](ticket-conventions.md#registry-rules)) — but only when the gate passes under the round budget below.
+The author (or implementer) **reads the ledger** — not a relayed copy of the findings — folds each into the artifact or records a deliberate dismissal (with reason), and sets that finding's `status:` in the ledger to `fixed` / `dismissed` in place. The ledger is the single source of truth carried across rounds. Only when the gate passes under the round budget below does the author advance status (writing both frontmatter and registry — see [ticket-conventions#Registry Rules](ticket-conventions.md#registry-rules)).
 
 ### Review round budget
 

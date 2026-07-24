@@ -23,7 +23,7 @@ There is **no fixed vault-wide reviewer**. The reviewing provider + model is sel
 
 ## Headless (non-interactive) invocation
 
-Reviewers **always** run non-interactively and autonomously. Point them at the persona file and the artifact paths, let them return findings + a verdict, and do not let them stop to ask questions — surfacing open items to the human is the main agent's job.
+Reviewers **always** run non-interactively and autonomously. Point them at the persona file and the artifact paths, have them **write their findings to the phase's ledger** (`review-plan.md` / `review-code.md` in the ticket folder) and return only a brief summary (verdict + severity counts + ledger path), and do not let them stop to ask questions — surfacing open items to the human is the main agent's job. See [ticket-gates#How the reviewer runs](ticket-gates.md#how-the-reviewer-runs) for why the detail goes to disk rather than back through the caller.
 
 ### Command templates
 
@@ -47,13 +47,13 @@ cd <repo> && codex exec - --model <reviewer-model> < <prompt-file>
 
 1. **Which persona to adopt** — the path to the persona file (Business Analyst for plan review; the domain Engineer for code review) with an instruction to review *as* that persona.
 2. **The artifact paths to read** — `ticket.md`, `plan.md`, `decision-*.md`, and the diff/branch or touched files. Tell it to read them itself; do **not** paste their contents.
-3. **The output contract** — return **structured findings + a single verdict (`approve` | `revise`)**, and an explicit instruction: *do not ask questions, do not edit files; if something is unclear, record it as a finding and still return a verdict.*
+3. **The output contract** — **write the full findings to the phase's ledger** (`review-plan.md` / `review-code.md` in the ticket folder, using `skills/templates/review-findings-template.md`) with a single verdict (`approve` | `revise`), and **return to the caller only a brief summary**: the verdict, the count of findings by severity, and the ledger path. Plus an explicit instruction: *do not ask questions; do not edit code, the plan, or any file except the ledger; if something is unclear, record it as a `question` finding in the ledger and still return a verdict.*
 
 ### Invariants
 
 - Prefer a **one-shot exec** over spawning an interactive sub-agent. Interactive/ACP *agents* have been observed to stall mid-turn; the one-shot form is reliable and autonomous.
 - Pin the reviewer **model** explicitly (the ticket's `reviewer_model`) so the gate is reproducible.
-- Keep the reviewer **read-only** — it inspects files and returns findings; it does not edit (the templates use a read-only/plan permission mode for this reason).
+- Keep the reviewer **read-only against the repo** — it inspects files and never edits code, the plan, or any other artifact. Its **one** write target is the phase's findings ledger in the ticket folder (in the vault, not the code repo). With a CLI whose plan/read-only mode blocks *all* writes, grant write access scoped to just the ticket folder (or the vault) while keeping the repo read-only; do not open up the repo.
 - **Preflight before the gate:** confirm the reviewer CLI is on `PATH`, is authenticated, and has been granted access to the repo (see below). If any check fails, do not run a degraded gate — see [If a provider is missing or unauthorized](#if-a-provider-is-missing-or-unauthorized).
 
 ## Per-project write permissions (do this once per project)

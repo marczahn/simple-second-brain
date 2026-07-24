@@ -33,12 +33,16 @@ Executable implementation document for one ticket: exact ordered steps, expected
 ### Decision
 Records a resolved tradeoff or clarified ambiguity with lasting consequence: the chosen option among alternatives, an accepted risk, or a requirement clarification.
 
+### Review Findings Ledger
+The durable output of a Cross-Model Review Gate: one rolling file per phase holding the reviewer's full findings (severity, location, status) and verdict. **Written by the reviewer** (its only write target; the repo stays read-only) and updated in place across the three-round budget — the author records each finding's outcome (`fixed`/`dismissed`) here rather than in the caller's context. The reviewer returns only a brief summary to the caller (verdict + severity counts + this file's path); the detail lives on disk so it survives a crash and is not paraphrased through the caller. See [ticket-gates#Cross-Model Review Gate](ticket-gates.md#cross-model-review-gate).
+
 ## Naming
 
 - Ticket folder: `TICKET-123-short-title/`
 - Ticket file: `ticket.md` inside the folder
 - Plan file: `plan.md` inside the folder (additional plans: `<purpose>-plan.md`)
 - Decision files: `decision-<short-title>.md` inside the folder
+- Review findings ledgers: `review-plan.md` and `review-code.md` inside the folder (one per phase)
 
 If there is no external ticket ID, use a local ID such as `{{LOCAL_TICKET_PREFIX}}-001`.
 
@@ -53,3 +57,4 @@ If there is no external ticket ID, use a local ID such as `{{LOCAL_TICKET_PREFIX
 - `skills/templates/ticket-template.md`
 - `skills/templates/plan-template.md`
 - `skills/templates/decision-template.md`
+- `skills/templates/review-findings-template.md`
