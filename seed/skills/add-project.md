@@ -47,6 +47,7 @@ Capture the current commit (`git -C <repo> log --oneline -1`) and add a row to `
 
 ```text
 projects/<name>/
+├── guardrails.md # prescriptive, human-owned rules (seeded here, then user-edited)
 ├── raw/          # project-scoped source documents
 ├── wiki/
 ├── personas.md
@@ -58,17 +59,22 @@ projects/<name>/
 
 Using the code index where available (else targeted reads), study structure, stack, architecture, key patterns, conventions, and testing. Create `wiki/overview.md` first, then pages as warranted: `architecture.md`, `data-model.md`, `api.md`, `key-patterns.md`, `code-conventions.md`, `testing-conventions.md`, `dependencies.md`, `open-questions.md`, plus subsystem pages. Each gets `commit:` frontmatter. **Record the project's commit convention and its scope map** (a list of `path/prefix/* → scope` rules from the repo's module layout) in this project's `code-conventions.md` — the [commit](commit.md) skill reads it from there per project.
 
-### 6. Generate personas
+### 6. Seed guardrails
+
+Write `projects/<name>/guardrails.md` from `skills/templates/project-guardrails-template.md`, pre-filled with the conventions, patterns, and constraints observed during the scan (coding style, testing expectations, hard don'ts). Keep rules short and imperative. This file is **prescriptive and human-owned** — it lives outside `wiki/`, is never overwritten by incremental refresh, and every ticket phase must respect it. **Tell the user it is theirs to edit** and that the AI will propose additions over time.
+
+### 7. Generate personas
 
 Write `personas.md` (the routing table) from `skills/templates/project-personas-template.md` and, **per layer**, a Domain Architect (`skills/templates/domain-architect-template.md`) and an Engineer (`skills/templates/engineer-template.md`) under `personas/`, specialized to the real stack and file layout. Link the generic personas from `skills/personas/`.
 
-### 7. Wire it up
+### 8. Wire it up
 
 Add a Projects subsection to `index.md` linking the new pages; append an `ingest` entry to `log.md` including the commit; confirm the `project-registry.md` row is complete (page count filled in).
 
-### 8. Verify (installer checklist)
+### 9. Verify (installer checklist)
 
 - [ ] No copy of the repo exists in the vault; it is referenced only by its registry path.
+- [ ] `projects/<name>/guardrails.md` exists (seeded from the template) and the user has been told it is theirs to edit.
 - [ ] Every new project page has `commit:` frontmatter.
 - [ ] `index.md` and `log.md` reference every page created.
 - [ ] The `project-registry.md` row is complete (repo path, code index, worktree root, commit, scan date, page count).

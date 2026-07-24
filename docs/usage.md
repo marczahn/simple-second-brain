@@ -14,7 +14,19 @@ It records the repo by its **resolved path** (never copying source into the vaul
 explores the structure/stack/architecture/patterns/tests, and generates the project's wiki pages plus a
 **Domain Architect and Engineer persona for each layer**, specialized to that stack. It also reminds you to run
 each configured CLI **once inside the repo** so it has write/trust there, and to gitignore the worktree root if
-it lives inside the repo.
+it lives inside the repo. It also seeds a **`guardrails.md`** for the project (see next).
+
+## Set project rules (guardrails)
+
+Each project gets a **`projects/<name>/guardrails.md`** — the one place to declare that project's conventions,
+coding guidelines, and hard don'ts as **rules the AI must obey**. `add-project` seeds it from what it observed in
+the repo, but **it's yours to edit**: add, tighten, or delete rules in plain Markdown at any time, and the AI will
+also propose additions as it learns. Keep them short and imperative ("Always…", "Never…").
+
+It sits *outside* `wiki/` on purpose: the wiki *describes* what the code is (and gets regenerated on refresh),
+while guardrails *prescribe* what work must follow — so a wiki refresh **never overwrites it**. Every ticket phase
+(planning, execution, both review gates, PR review) reads it, and it's authoritative: if a guardrail and a wiki
+page disagree, the guardrail wins.
 
 ## Work a ticket
 
@@ -47,7 +59,8 @@ one summary comment).
 ## Refresh the wiki for a codebase
 
 Ask to **update** a project. It reads the last scanned commit, runs `git diff` against HEAD, and updates only the
-affected pages — it does not re-ingest the whole repo, so your manual additions are preserved.
+affected pages — it does not re-ingest the whole repo, so your manual additions are preserved. Your
+`guardrails.md` is never touched.
 
 ## Other everyday asks
 

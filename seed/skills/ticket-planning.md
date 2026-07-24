@@ -17,7 +17,7 @@ The architect is **specialized for the ticket's domain** (frontend, backend, or 
 
 ## Steps
 
-1. **Read the ready ticket** (including `domain:` and acceptance criteria) and gather context in the [knowledge-source order](shared/ticket-conventions.md#knowledge-sources): ticket → project docs → llm-wiki → code-intelligence index → code (`grep`).
+1. **Read the ready ticket** (including `domain:` and acceptance criteria) and gather context in the [knowledge-source order](shared/ticket-conventions.md#knowledge-sources): ticket → project guardrails → project docs → llm-wiki → code-intelligence index → code (`grep`). The plan must not propose anything the project's `guardrails.md` forbids.
 2. **Write the plan** from `skills/templates/plan-template.md` at the ticket folder's `plan.md`. The plan must be **very detailed, down to code level** — exact files, functions, signatures, commands, and the expected result of each step. Any model or human must be able to execute it cold.
 3. **Minimize the change.** Plan the **fewest changes** that satisfy the ticket. No refactorings, renames, cleanups, or improvements unrelated to the task. If something tempting is out of scope, note it as a follow-up, not a step.
 4. **Cover behavior impact.** For each change, identify other call sites and behaviors it affects (use the code-intelligence index where available) and plan how those are handled.

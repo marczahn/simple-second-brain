@@ -16,10 +16,11 @@ Shared structural reference for ticketed work: where to read context, what the a
 Every phase reads context in this order, cheapest and most authoritative first. Stop as soon as the question is answered.
 
 1. **Ticket** — `ticket.md`, plan, and `decision-*.md` in the ticket folder. The work item is the first source of truth for intent and scope.
-2. **Project documentation** — docs inside the project codebase (`docs/`, ADRs under `docs/adr/`, READMEs).
-3. **LLM-wiki** — this vault's `projects/<project>/wiki/` pages for architecture, patterns, conventions.
-4. **Code-intelligence index** — if one is available ({{CODE_INDEX}}), prefer it for "how/where/what" questions over manual grep+read; it returns verbatim source grouped by file in one call. Strongly recommended (see [add-project](../add-project.md)).
-5. **Code** — read the source directly. `grep`/`ripgrep` for text search when the index does not cover the detail.
+2. **Project guardrails** — `projects/<project>/guardrails.md`. Prescriptive, human-owned rules the work MUST obey; authoritative over anything the wiki merely describes. Read it before planning or writing code.
+3. **Project documentation** — docs inside the project codebase (`docs/`, ADRs under `docs/adr/`, READMEs).
+4. **LLM-wiki** — this vault's `projects/<project>/wiki/` pages for architecture, patterns, conventions.
+5. **Code-intelligence index** — if one is available ({{CODE_INDEX}}), prefer it for "how/where/what" questions over manual grep+read; it returns verbatim source grouped by file in one call. Strongly recommended (see [add-project](../add-project.md)).
+6. **Code** — read the source directly. `grep`/`ripgrep` for text search when the index does not cover the detail.
 
 ## Artifact Types
 

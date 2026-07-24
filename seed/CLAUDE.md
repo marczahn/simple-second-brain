@@ -20,6 +20,7 @@ This vault is a persistent, LLM-maintained wiki ("second brain") for managing kn
 │   └── assets/         # Downloaded images referenced by sources
 ├── projects/           # Per-project content (raw sources, wiki, personas, tasks)
 │   └── <project>/
+│       ├── guardrails.md # Prescriptive, human-owned rules the agent MUST follow (see below)
 │       ├── raw/        # Immutable source documents scoped to <project> only
 │       ├── wiki/       # All wiki pages about <project>
 │       ├── personas.md # Persona intro + routing table + links
@@ -48,7 +49,7 @@ This vault is a persistent, LLM-maintained wiki ("second brain") for managing kn
     │   ├── ticket-worktrees.md     # worktree per ticket: location, branch, creation, cleanup, lint
     │   └── providers.md            # provider/model setup, headless invocations, per-project write perms
     ├── personas/       # Generic (project-agnostic) personas + principal-engineer-reviewer
-    └── templates/      # ticket / plan / decision / pr-review / project-personas / architect / engineer
+    └── templates/      # ticket / plan / decision / pr-review / project-personas / project-guardrails / architect / engineer
 ```
 
 `skills/` holds **multiple** reusable workflows, not just the ticket workflow. The **authoritative, up-to-date catalog is the Skills section of [`index.md`](index.md)** — consult it (or list the `skills/` directory) before starting work; new skills are added there rather than enumerated across the schema. Each skill file is self-describing via its frontmatter and trigger.
@@ -134,7 +135,8 @@ Follow `skills/add-project.md` (runs as an installer). In summary:
 5. Create `projects/<name>/wiki/overview.md` plus pages as warranted.
 6. **Every project wiki page includes `commit:` in frontmatter.** Pattern/convention pages include **real code snippets**.
 7. Generate `projects/<name>/personas.md` plus the project's architects and engineers.
-8. Update `index.md`, append to `log.md`, update `project-registry.md` (including code-index availability and worktree root).
+8. Seed `projects/<name>/guardrails.md` from `skills/templates/project-guardrails-template.md` with the conventions observed during the scan, and tell the user it is theirs to edit.
+9. Update `index.md`, append to `log.md`, update `project-registry.md` (including code-index availability and worktree root).
 
 ### Update Codebase (Incremental Refresh)
 
@@ -148,7 +150,7 @@ Follow `skills/add-project.md` (runs as an installer). In summary:
 8. Update `project-registry.md`.
 9. Append to `log.md`.
 
-**Key principle:** scope updates with `git diff --stat`; do not re-ingest the whole repo. Preserves manual additions.
+**Key principle:** scope updates with `git diff --stat`; do not re-ingest the whole repo. Preserves manual additions. **Never touch `projects/<name>/guardrails.md`** — it is human-owned policy, not derived from the code.
 
 ### Query
 
@@ -161,6 +163,14 @@ Follow `skills/add-project.md` (runs as an installer). In summary:
 ### Lint (health check)
 
 Follow `skills/lint.md`. It scans for contradictions, stale claims, orphan pages, missing cross-references, and data gaps; flags any project whose wiki `commit:` is behind the codebase HEAD; **reconciles ticket status** (frontmatter ↔ `ticket-registry.md`, `done`-but-not-`curated` tickets); and runs the stale-worktree check from `skills/shared/ticket-worktrees.md`. Report findings, fix what's safe, update the log.
+
+## Project Guardrails
+
+Each project has a **`projects/<name>/guardrails.md`** — the single, human-owned place where that project's conventions, coding guidelines, and hard constraints are declared (template: `skills/templates/project-guardrails-template.md`). It is **prescriptive** (rules work must obey) and lives **outside `wiki/`**, which distinguishes it from the *descriptive* convention pages (`wiki/code-conventions.md`, `wiki/testing-conventions.md`, `wiki/key-patterns.md`) that record what the code currently is.
+
+- **Both roles edit it.** The human sets policy; the AI proposes additions as it learns the repo. It is seeded at ingest and refined over time.
+- **Refresh never overwrites it.** The Update Codebase flow regenerates `wiki/` pages, but must leave `guardrails.md` untouched — it is not derived from the code.
+- **It is authoritative.** Every ticket phase reads it (it is knowledge source #2, right after the ticket) and must respect it. When a guardrail conflicts with a wiki observation, the guardrail wins — fix the code or flag it to the human.
 
 ## Project Wiki Sections
 

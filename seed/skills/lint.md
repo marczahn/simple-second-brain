@@ -17,6 +17,7 @@ A repeatable health check for the vault. Run it when the user asks for a health 
 - **Orphan pages** — pages under `projects/*/wiki/` or the root with no `index.md` entry and no inbound Markdown link.
 - **Missing cross-references** — related pages that should link to each other but don't.
 - **Data gaps** — expected project pages that don't exist yet (see `CLAUDE.md` → Project Wiki Sections).
+- **Missing guardrails** — any project in `project-registry.md` with no `projects/<name>/guardrails.md`. Flag it (do not auto-generate — it is human-owned; recommend seeding from the template).
 - **Link lint** — cross-references are standard Markdown links; no Obsidian wikilinks should survive: `grep -rnE '\[\[' --include='*.md' .` must return nothing.
 
 ## 2. Commit drift
