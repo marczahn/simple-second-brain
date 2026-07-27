@@ -18,6 +18,15 @@ with a ticket and let the system drive.
 > phases, gates, and registries exist to add structure, checkpoints, and guardrails **on top of** that inherently
 > non-deterministic behavior — not to remove it. Think disciplined workflow for an LLM, not a push-button app.
 
+## How it works: adapted loop engineering
+
+Under the hood, the ticket lifecycle is an **adapted form of _loop engineering_** — the discipline of designing the
+loops an agent runs in (observe → act → verify → recover), not just the prompt you hand it (see LangChain's
+[*The Art of Loop Engineering*](https://www.langchain.com/blog/the-art-of-loop-engineering)). This project deliberately
+dials autonomy *down* and verification *up*: stacked phase skills, two bounded cross-*provider* review loops, a
+mandatory human plan gate, on-disk state anything can resume cold, and a curation phase that improves the substrate
+for the next ticket. See **[Loop engineering](docs/loop-engineering.md)** for the full mapping.
+
 ## Features
 
 - **Installs from one prompt** — no package to install; point your AI tool at [`bootstrap.md`](bootstrap.md) and answer the interview. It writes the vault from the real files under [`seed/`](seed/).
@@ -28,7 +37,7 @@ with a ticket and let the system drive.
 - **Architects plan, engineers execute** — each project gets domain-specific architect and engineer personas, plus generic personas (analyst, QA, curator, PR reviewer) shared across projects.
 - **Self-healing state** — a `lint` skill reconciles ticket status between the ticket and the registry and flags un-curated `done` tickets, so forgotten transitions surface instead of rotting.
 - **Tool-neutral** — works with whatever models, Git host, ticket system, and (optional but recommended) code-intelligence index you actually use.
-- **Fully customizable** — it's just Markdown; change anything by telling your AI tool in plain language.
+- **Customizable by just talking to it** — the workflow *is* plain-language instructions, so "configuring" it means telling the AI what you want, not editing a config schema. Drop the human plan-approval gate, add a new model provider like OpenCode, switch reviewers to ACP — each is a sentence, not a fork. More malleable than most software, and none of it magic (see [Customizing it](docs/usage.md#customizing-it)).
 
 ## Quickstart
 
@@ -45,6 +54,7 @@ interview preview, and what gets created.
 
 - **[Getting started](docs/getting-started.md)** — prerequisites, the interview, and the vault you end up with.
 - **[Concept](docs/concept.md)** — the llm-wiki idea, why it's built this way, and where it's opinionated.
+- **[Loop engineering](docs/loop-engineering.md)** — the agentic-loop concept and how this project adapts it.
 - **[Usage](docs/usage.md)** — day-to-day work: add a project, run a ticket, review a PR, refresh the wiki, curate.
 
 ## Status & contributions

@@ -75,3 +75,25 @@ It's all Markdown — adjust it anytime to your needs. The `commit` skill's scop
 the worktree root — all editable. Want to switch ticket systems (Jira → Trello) or code hosts (GitHub → GitLab)?
 Just tell your AI tool to do it, and ask for help if needed. If you get stuck somewhere, ask your AI tool to
 explain more.
+
+The point worth stressing: there is **no compiled logic and no settings schema to fight** — the workflow *is* a set
+of plain-language instructions. So "configuring" it is just editing those instructions, and you can do that by
+**telling the AI what you want** rather than hunting for the right file. That makes it far more malleable than most
+software, without any of it being magic. Two examples:
+
+- **Drop the human plan-approval gate.** Say *"stop requiring my approval before execution — let planning flow
+  straight into execution once the cross-model review passes."* The AI edits the User Plan Review Gate out of
+  [`skills/shared/ticket-gates.md`](../seed/skills/shared/ticket-gates.md) (and the composer's flow). No fork, no
+  code change — it's a paragraph of English becoming a different paragraph. (Reverse it just as easily; and note
+  this removes a real safety check, so it's your call.)
+- **Add or swap a model provider.** Say *"add OpenCode as a third author/reviewer alongside Claude Code and Codex,"*
+  or *"switch the review gate to talk to reviewers over ACP instead of headless `exec`."* The AI updates
+  [`skills/shared/providers.md`](../seed/skills/shared/providers.md) with the new invocation pattern and the gate
+  picks it up — because the gate only ever says "invoke the chosen provider headless," never hard-codes one.
+- **Change language.** If - for whatever reason - you want to use a different language, say *"use Spanish for
+  this entire second brain."*. AI will ask back for confirmation, if necessary and translate the entire second brain
+  into Spanish..
+
+Because the "code" is prose, the limit is roughly *what you can describe*, not *what a config file exposes*. It's
+still LLM-driven, so changes are as reliable as the model applying them — read the diff before you rely on it, same
+as any other edit.
