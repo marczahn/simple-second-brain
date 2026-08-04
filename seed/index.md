@@ -31,7 +31,9 @@ Master catalog of all wiki pages. Read this first to find relevant pages.
 - [Ticket Personas](skills/shared/ticket-personas.md) — persona routing.
 - [Ticket Gates](skills/shared/ticket-gates.md) — cross-model + user gates, provider pairing.
 - [Ticket Worktrees](skills/shared/ticket-worktrees.md) — worktree per ticket.
-- [Providers](skills/shared/providers.md) — provider/model setup, headless invocation, write permissions.
+- [Providers](skills/shared/providers.md) — provider/model setup, ACP + headless invocation, write permissions.
+- [ACP review runner](skills/shared/acp-review.mjs) — the vault's ACP client; runs one cross-model review turn and enforces the gate invariants in code.
+- [ACP Protocol](skills/shared/acp-protocol.md) — wire-level JSON-RPC flow underneath the runner; read when debugging a review or adding an ACP agent.
 - [Business Analyst](skills/personas/business-analyst.md) — problem definition + cross-model plan reviewer.
 - [Architect](skills/personas/architect.md) — generic fallback architect (needs user confirmation).
 - [QA Engineer](skills/personas/qa-engineer.md) — acceptance-criteria validation.

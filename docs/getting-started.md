@@ -37,7 +37,9 @@ Optional but recommended:
   `claude-agent-acp` fronts Claude Code and `@zed-industries/codex-acp` (the successor to `@agentclientprotocol/codex-acp`)
   fronts Codex; the shared `@agentclientprotocol/sdk` client library comes in automatically as a dependency of the
   agents that need it, so you don't install it yourself. Install whichever agents match the providers you actually
-  drive — you don't need both.
+  drive — you don't need both. The review gates talk to these agents through a small **Node.js** runner the vault
+  ships (`skills/shared/acp-review.mjs`), so Node must be on `PATH`. Without the agents the gates still run via a
+  one-shot CLI `exec` fallback — but a wedged exec is undetectable, which is the whole reason ACP is preferred.
 
   > **Reminder:** you don't configure this in a file. Depending on what you want to use, just **tell the AI in plain
   > language** — e.g. *"install the ACP agents for me"*, *"route Claude and Codex through ACP"*, or *"only set up
@@ -94,7 +96,7 @@ A directory tree of Markdown — your vault:
     ├── add-project.md          # onboard a new codebase (installer)
     ├── commit.md               # conventional-commit helper
     ├── lint.md                 # health check + status reconciliation
-    ├── shared/                 # references (status, conventions, personas, gates, worktrees, providers)
+    ├── shared/                 # references (status, conventions, personas, gates, worktrees, providers) + acp-review.mjs runner
     ├── personas/               # generic personas (analyst, fallback architect, QA, curator, PR reviewer)
     └── templates/              # ticket / plan / decision / pr-review / project-personas / architect / engineer
 ```

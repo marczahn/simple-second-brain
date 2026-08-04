@@ -67,12 +67,16 @@ you're driving). There is no fixed vault-wide reviewer, so it's easy to vary per
 - **Code review** — before a change reaches QA, a different model (acting as the relevant Engineer) reviews the
   diff against conventions, patterns, ADRs, behavior impact, and test quality.
 
-Reviewers run **non-interactively** — a one-shot headless `exec` (`codex exec`, `claude -p`), not a spawned
-interactive agent. That matters: interactive/ACP sub-agents were observed to *stall* mid-review; the one-shot
-form is reliable and autonomous. The reviewer returns findings and a verdict; **only the main agent** ever stops
-to ask you something. And if a reviewer provider is missing or unauthorized at gate time, the main agent stops
-and asks you to fix it — it never silently skips the gate. The *plan* also always passes a hard **human approval
-gate** before any code is written.
+Reviewers run **non-interactively** over the [Agent Client Protocol (ACP)](https://agentclientprotocol.com),
+driven by a small runner the vault ships (`skills/shared/acp-review.mjs`). A bare CLI one-shot is a black box —
+a wedged process looks identical to a slow one and silently blocks a gate — so ACP is the default: a long-lived
+session makes the turn *observable*, so a stall is detected and reported instead of hanging forever, and the
+runner enforces the gate's invariants in code (pins the model, keeps the reviewer read-only and *verifies* it by
+snapshotting the repo, and writes the findings itself). A one-shot exec (`codex exec`, `claude -p`) remains the
+recorded fallback. The reviewer returns findings and a verdict; **only the main agent** ever stops to ask you
+something. And if a reviewer provider is missing or unauthorized at gate time, the main agent stops and asks you
+to fix it — it never silently skips the gate. The *plan* also always passes a hard **human approval gate** before
+any code is written.
 
 ## Not a deterministic tool
 

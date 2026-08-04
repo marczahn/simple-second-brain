@@ -87,7 +87,9 @@ software, without any of it being magic. Two examples:
   code change — it's a paragraph of English becoming a different paragraph. (Reverse it just as easily; and note
   this removes a real safety check, so it's your call.)
 - **Add or swap a model provider.** Say *"add OpenCode as a third author/reviewer alongside Claude Code and Codex,"*
-  or *"switch the review gate to talk to reviewers over ACP instead of headless `exec`."* The AI updates
+  or *"the ACP agent is flaky today — fall back to a one-shot `exec` for this gate."* The review gate runs over
+  [ACP](getting-started.md#prerequisites) by default (a runner the vault ships, `skills/shared/acp-review.mjs`,
+  makes a stalled review detectable instead of a silent hang); the AI updates
   [`skills/shared/providers.md`](../seed/skills/shared/providers.md) with the new invocation pattern and the gate
   picks it up — because the gate only ever says "invoke the chosen provider headless," never hard-codes one.
 - **Change language.** If - for whatever reason - you want to use a different language, say *"use Spanish for

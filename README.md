@@ -33,11 +33,11 @@ for the next ticket. See **[Loop engineering](docs/loop-engineering.md)** for th
 - **LLM-maintained wiki** — the AI writes and refreshes the knowledge base; you curate sources and approve work.
 - **Codebase-aware** — documents real repos, referenced by path (never copied in), pinned to a commit and refreshable incrementally via `git diff`.
 - **Composed five-phase ticket lifecycle** — a thin composer dispatches five self-contained phase skills (research → planning → execution → finalizing → **curation**), each owned by a named persona, so a different model can pick up cold. `done` (shipped) and `curated` (harvested) are distinct statuses, so nothing falls through the cracks.
-- **Two cross-provider review gates** — the *plan* and the *code* are each reviewed by a *different* model than the one that produced them, run **non-interactively** so they don't stall. Supports **Claude Code** and **OpenAI Codex** as interchangeable author/reviewer, and you **pick the reviewer per ticket** (defaulting to a provider different from the one you're driving) rather than pinning one vault-wide.
+- **Two cross-provider review gates** — the *plan* and the *code* are each reviewed by a *different* model than the one that produced them, run **non-interactively over [ACP](#recommended-drive-the-providers-over-acp)** (a shipped runner, `skills/shared/acp-review.mjs`, makes a stalled review detectable instead of a silent hang and enforces the gate's read-only invariant in code). Supports **Claude Code** and **OpenAI Codex** as interchangeable author/reviewer, and you **pick the reviewer per ticket** (defaulting to a provider different from the one you're driving) rather than pinning one vault-wide.
 - **Architects plan, engineers execute** — each project gets domain-specific architect and engineer personas, plus generic personas (analyst, QA, curator, PR reviewer) shared across projects.
 - **Self-healing state** — a `lint` skill reconciles ticket status between the ticket and the registry and flags un-curated `done` tickets, so forgotten transitions surface instead of rotting.
 - **Tool-neutral** — works with whatever models, Git host, ticket system, and (optional but recommended) code-intelligence index you actually use.
-- **Customizable by just talking to it** — the workflow *is* plain-language instructions, so "configuring" it means telling the AI what you want, not editing a config schema. Drop the human plan-approval gate, add a new model provider like OpenCode, switch reviewers to ACP — each is a sentence, not a fork. More malleable than most software, and none of it magic (see [Customizing it](docs/usage.md#customizing-it)).
+- **Customizable by just talking to it** — the workflow *is* plain-language instructions, so "configuring" it means telling the AI what you want, not editing a config schema. Drop the human plan-approval gate, add a new model provider like OpenCode, fall back to a one-shot `exec` when an ACP agent is flaky — each is a sentence, not a fork. More malleable than most software, and none of it magic (see [Customizing it](docs/usage.md#customizing-it)).
 
 ## Quickstart
 
@@ -64,6 +64,12 @@ npm i -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp
 `claude-agent-acp` fronts Claude Code and `@zed-industries/codex-acp` (the successor to `@agentclientprotocol/codex-acp`)
 fronts Codex; the shared `@agentclientprotocol/sdk` client library comes in automatically as a dependency, so you
 don't install it yourself. Or just ask your AI tool to do it for you — say *"install the ACP agents"* and it runs the command above.
+
+The vault ships its own ACP client, **`skills/shared/acp-review.mjs`** (Node.js) — the one script in an otherwise
+all-Markdown vault. The review gates call it to run a single review turn and enforce their invariants in code: it
+pins the reviewer model, keeps the reviewer strictly read-only and *verifies* that by diffing the repo before and
+after, writes the findings ledger itself, and turns a stalled turn into a non-zero exit instead of a hang. If no
+ACP agent is available it degrades to a one-shot CLI `exec`. See [`providers.md`](seed/skills/shared/providers.md).
 
 ## Documentation
 

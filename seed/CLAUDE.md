@@ -41,13 +41,15 @@ This vault is a persistent, LLM-maintained wiki ("second brain") for managing kn
     ├── add-project.md          # onboard a new codebase into the vault (installer)
     ├── commit.md               # conventional-commit helper (ship delegates to it)
     ├── lint.md                 # health check + status/registry reconciliation
-    ├── shared/         # Self-contained shared reference the phase skills link to (not runnable skills)
+    ├── shared/         # Shared reference the phase skills link to (Markdown facts + one runnable ACP client)
     │   ├── ticket-status-model.md  # ticket / clarification / plan status vocabularies
     │   ├── ticket-conventions.md   # knowledge sources, artifact types, naming, registry, templates
     │   ├── ticket-personas.md      # persona routing: generic vs project, domain mapping
     │   ├── ticket-gates.md         # cross-model review + user plan review gates, provider pairing
     │   ├── ticket-worktrees.md     # worktree per ticket: location, branch, creation, cleanup, lint
-    │   └── providers.md            # provider/model setup, headless invocations, per-project write perms
+    │   ├── providers.md            # provider/model setup, headless invocations, per-project write perms
+    │   ├── acp-review.mjs          # the vault's ACP review client (runs one review turn, enforces gate invariants)
+    │   └── acp-protocol.md         # wire-level JSON-RPC flow underneath acp-review.mjs (debug/extend reference)
     ├── personas/       # Generic (project-agnostic) personas + principal-engineer-reviewer
     └── templates/      # ticket / plan / decision / pr-review / project-personas / project-guardrails / architect / engineer
 ```

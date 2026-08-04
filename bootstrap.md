@@ -59,7 +59,7 @@ Record every answer. Substitute the `{{PLACEHOLDER}}` tokens (right column) thro
 ### 2.1 Providers (Claude Code + Codex)
 
 - **Ask:** Which provider CLIs do you have available — **Claude Code**, **Codex**, or both? Confirm each intended one is installed and authenticated. **Nothing is pinned vault-wide:** the cross-model reviewer (provider + model) is chosen **per ticket** at ticket start, and defaults to a provider different from the one you drive with.
-- **Headless invocations** used by the gates (see `seed/skills/shared/providers.md`): Claude → `claude -p "<prompt>"`; Codex → `codex exec - < <prompt-file>`. Reviewers run **non-interactively** (one-shot exec), never as a spawned interactive agent.
+- **Headless invocations** used by the gates (see `seed/skills/shared/providers.md`): reviewers run **non-interactively** over **ACP** by default, driven by the shipped runner `seed/skills/shared/acp-review.mjs` (agents `claude-agent-acp` / `codex-acp`); a one-shot exec (`claude -p "<prompt>"` / `codex exec - < <prompt-file>`) is the recorded fallback. ACP makes a wedged turn *observable* (a stall exits non-zero instead of hanging) — recommend installing the ACP agents: `npm i -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp` (install only the ones matching the providers the user drives; needs **Node.js**).
 - **Cross-model review needs two providers.** At least one provider besides the one you drive with must be installed and working, or no ticket can clear its review gate. If the intended second provider isn't working, help the user fix it — don't silently degrade.
 - **Per-project write perms:** remind the user each provider CLI they will use (author *or* reviewer) must be run **once inside each repo** to gain write/trust there — this also goes on the add-project checklist.
 - **Capture:** nothing pinned — just confirm which provider CLIs are available and working. Reviewer provider/model is recorded per ticket, not here.
@@ -139,7 +139,7 @@ For each project from 2.7, run the **Add Project** installer (`{{VAULT_PATH}}/sk
 
 - [ ] Tree matches: `CLAUDE.md`, `AGENTS.md`, `index.md`, `log.md`, `overview.md`, `project-registry.md`, `ticket-registry.md`, `raw/`, `projects/`, `skills/`.
 - [ ] `skills/` has the composer + 5 phase skills (research, planning, execution, finalizing, curation), `pr-review-workflow`, `add-project`, `commit`, `lint`.
-- [ ] `skills/shared/` has all 6 refs (status-model, conventions, personas, gates, worktrees, providers).
+- [ ] `skills/shared/` has all 6 Markdown refs (status-model, conventions, personas, gates, worktrees, providers) **plus the runnable ACP client `acp-review.mjs`** (copied verbatim; not a `.md` file).
 - [ ] `skills/personas/` has 5 generic personas; `skills/templates/` has 7 templates.
 - [ ] No repo is copied into the vault; each is referenced only by its `project-registry.md` path.
 - [ ] No fixed reviewer is pinned in the vault: `ticket-gates.md` and `providers.md` describe the reviewer as **chosen per ticket** and required to differ from the authoring provider; `ticket-template.md` has `reviewer_provider` / `reviewer_model` fields and `ticket-registry.md` has a `Reviewer` column.
