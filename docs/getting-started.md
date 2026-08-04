@@ -24,6 +24,24 @@ Optional but recommended:
   system? The vault uses local Markdown tickets (`TASK-001`).
 - **[Obsidian](https://obsidian.md)** — for link navigation and graph view (it follows the standard Markdown links the vault uses). The vault is just Markdown, so any
   editor works.
+- **[ACP (Agent Client Protocol)](https://agentclientprotocol.com) transport** — strongly recommended for driving
+  the providers. Plain provider-CLI calls occasionally **hang** (a spawned process stalls with no output and no
+  exit), which silently blocks a review gate or a phase. ACP puts a structured, long-lived client/server transport
+  between the vault and each agent, so calls stay observable and recoverable instead of stuck. Install the agents
+  globally:
+
+  ```bash
+  npm i -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp
+  ```
+
+  `claude-agent-acp` fronts Claude Code and `@zed-industries/codex-acp` (the successor to `@agentclientprotocol/codex-acp`)
+  fronts Codex; the shared `@agentclientprotocol/sdk` client library comes in automatically as a dependency of the
+  agents that need it, so you don't install it yourself. Install whichever agents match the providers you actually
+  drive — you don't need both.
+
+  > **Reminder:** you don't configure this in a file. Depending on what you want to use, just **tell the AI in plain
+  > language** — e.g. *"install the ACP agents for me"*, *"route Claude and Codex through ACP"*, or *"only set up
+  > the Codex ACP agent"* — and it runs the right command. Customizing this vault is a sentence, not a config edit.
 
 ## Steps
 

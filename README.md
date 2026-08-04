@@ -50,6 +50,21 @@ for the next ticket. See **[Loop engineering](docs/loop-engineering.md)** for th
 The prompt is **run-once**. See **[docs/getting-started.md](docs/getting-started.md)** for prerequisites, the
 interview preview, and what gets created.
 
+### Recommended: drive the providers over ACP
+
+Run Claude Code and Codex through the [Agent Client Protocol (ACP)](https://agentclientprotocol.com) rather than
+raw CLI invocations. Plain CLI calls occasionally **hang** — a spawned process stalls with no output and no exit,
+which silently blocks a review gate or a phase. ACP puts a structured, long-lived client/server transport between
+the vault and each agent, so calls stay observable and recoverable instead of stuck. Install the agents globally:
+
+```bash
+npm i -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp
+```
+
+`claude-agent-acp` fronts Claude Code and `@zed-industries/codex-acp` (the successor to `@agentclientprotocol/codex-acp`)
+fronts Codex; the shared `@agentclientprotocol/sdk` client library comes in automatically as a dependency, so you
+don't install it yourself. Or just ask your AI tool to do it for you — say *"install the ACP agents"* and it runs the command above.
+
 ## Documentation
 
 - **[Getting started](docs/getting-started.md)** — prerequisites, the interview, and the vault you end up with.
