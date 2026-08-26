@@ -22,7 +22,7 @@ Master catalog of all wiki pages. Read this first to find relevant pages.
 - [ticket-execution](skills/ticket-execution.md) — Phase 3 (Engineering personas): implement with tests; cross-model code review.
 - [ticket-finalizing](skills/ticket-finalizing.md) — Phase 4 (QA → Ship): validate, commit, push, open {{PR_NOUN}}; ends at `done`.
 - [ticket-curation](skills/ticket-curation.md) — Phase 5 (Curator): harvest learnings into the wiki; `done` → `curated`.
-- [pr-review-workflow](skills/pr-review-workflow.md) — Standalone, two-stage, ticket-aware {{PR_NOUN}} review.
+- [pr-review-workflow](skills/pr-review-workflow.md) — Standalone, two-stage, ticket-aware {{PR_NOUN}} review: reviewer lineup from the project's strategy, one pass per reviewer, consolidated into a checkbox doc.
 - [add-project](skills/add-project.md) — Onboard a new codebase (installer; reference by path, never copy).
 - [commit](skills/commit.md) — Conventional-commit helper; the ship stage delegates to it.
 - [lint](skills/lint.md) — Health check + status/registry reconciliation + stale-worktree check.
@@ -38,7 +38,7 @@ Master catalog of all wiki pages. Read this first to find relevant pages.
 - [Architect](skills/personas/architect.md) — generic fallback architect (needs user confirmation).
 - [QA Engineer](skills/personas/qa-engineer.md) — acceptance-criteria validation.
 - [Curator](skills/personas/curator.md) — wiki harvest after ticket completion.
-- [Principal Engineer Reviewer](skills/personas/principal-engineer-reviewer.md) — {{PR_NOUN}} review persona.
+- [Principal Engineer Reviewer](skills/personas/principal-engineer-reviewer.md) — {{PR_NOUN}} review persona and **review lead**: builds the per-project reviewer lineup and consolidates its findings.
 
 ## Projects
 <!-- one subsection per project, added during ingest -->

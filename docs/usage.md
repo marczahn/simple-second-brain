@@ -14,7 +14,8 @@ It records the repo by its **resolved path** (never copying source into the vaul
 explores the structure/stack/architecture/patterns/tests, and generates the project's wiki pages plus a
 **Domain Architect and Engineer persona for each layer**, specialized to that stack. It also reminds you to run
 each configured CLI **once inside the repo** so it has write/trust there, and to gitignore the worktree root if
-it lives inside the repo. It also seeds a **`guardrails.md`** for the project (see next).
+it lives inside the repo. It also seeds two human-owned policy files for the project: a **`guardrails.md`** (see
+next) and a **`pr-review-strategy.md`** (see "Review a PR / MR").
 
 ## Set project rules (guardrails)
 
@@ -52,15 +53,26 @@ that was never curated** (it dispatches straight to curation).
 ## Review a PR / MR
 
 Call the **`pr-review-workflow`** skill with a PR/MR URL. This is **separate** from the ticket workflow. It
-reviews the change like a principal engineer — with the linked ticket in mind — and writes a checkbox review
-document. **It posts nothing** until you check the findings worth posting; then it posts only those (inline +
-one summary comment).
+reviews the change with the linked ticket in mind and writes a checkbox review document. **It posts nothing**
+until you check the findings worth posting; then it posts only those (inline + one summary comment).
+
+The review is run by a **lineup** of reviewers, not one generalist. The Principal Engineer Reviewer leads —
+it builds the lineup, owns ticket intent, and consolidates — and the rest come from that project's
+**`projects/<name>/pr-review-strategy.md`**: an area map (which path globs are backend, frontend, contract,
+data, …), one reviewer per area with its own checklist, escalation triggers ("a migration also wakes the data
+reviewer"), the project's hot spots, and its severity calibration. Each reviewer runs as its own pass; a
+reviewer that doesn't apply is recorded as `n/a` **with the diffstat proving it**, so nothing is skipped
+quietly. Two reviewers finding the same thing independently collapse into one finding with higher confidence.
+
+Like the guardrails, the strategy is **yours to edit** and never overwritten by a refresh; the difference is
+that guardrails say *what the rules are*, the strategy says *how a review is staffed here*. A project without
+one still gets reviewed — the lead simply runs alone and offers to seed a strategy afterwards.
 
 ## Refresh the wiki for a codebase
 
 Ask to **update** a project. It reads the last scanned commit, runs `git diff` against HEAD, and updates only the
 affected pages — it does not re-ingest the whole repo, so your manual additions are preserved. Your
-`guardrails.md` is never touched.
+`guardrails.md` and `pr-review-strategy.md` are never touched.
 
 ## Other everyday asks
 

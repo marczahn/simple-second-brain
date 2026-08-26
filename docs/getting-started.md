@@ -98,7 +98,8 @@ A directory tree of Markdown — your vault:
     ├── lint.md                 # health check + status reconciliation
     ├── shared/                 # references (status, conventions, personas, gates, worktrees, providers) + acp-review.mjs runner
     ├── personas/               # generic personas (analyst, fallback architect, QA, curator, PR reviewer)
-    └── templates/              # ticket / plan / decision / pr-review / project-personas / architect / engineer
+    └── templates/              # ticket / plan / decision / pr-review / project-personas /
+                                # project-guardrails / project-pr-review-strategy / architect / engineer
 ```
 
 The moving parts, kept deliberately separate: **knowledge** (wiki pages) ≠ **procedure** (skills) ≠ **behavior**

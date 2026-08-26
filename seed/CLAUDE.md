@@ -21,6 +21,7 @@ This vault is a persistent, LLM-maintained wiki ("second brain") for managing kn
 ├── projects/           # Per-project content (raw sources, wiki, personas, tasks)
 │   └── <project>/
 │       ├── guardrails.md # Prescriptive, human-owned rules the agent MUST follow (see below)
+│       ├── pr-review-strategy.md # Prescriptive, human-owned: {{PR_NOUN}} reviewer lineup per area (see below)
 │       ├── raw/        # Immutable source documents scoped to <project> only
 │       ├── wiki/       # All wiki pages about <project>
 │       ├── personas.md # Persona intro + routing table + links
@@ -51,7 +52,8 @@ This vault is a persistent, LLM-maintained wiki ("second brain") for managing kn
     │   ├── acp-review.mjs          # the vault's ACP review client (runs one review turn, enforces gate invariants)
     │   └── acp-protocol.md         # wire-level JSON-RPC flow underneath acp-review.mjs (debug/extend reference)
     ├── personas/       # Generic (project-agnostic) personas + principal-engineer-reviewer
-    └── templates/      # ticket / plan / decision / pr-review / project-personas / project-guardrails / architect / engineer
+    └── templates/      # ticket / plan / decision / pr-review / project-personas / project-guardrails /
+                        # project-pr-review-strategy / architect / engineer
 ```
 
 `skills/` holds **multiple** reusable workflows, not just the ticket workflow. The **authoritative, up-to-date catalog is the Skills section of [`index.md`](index.md)** — consult it (or list the `skills/` directory) before starting work; new skills are added there rather than enumerated across the schema. Each skill file is self-describing via its frontmatter and trigger.
@@ -114,7 +116,7 @@ When starting (or resuming) any ticketed work, always start at `skills/ticket-wo
 
 ### {{PR_NOUN}} Review
 
-When asked to review a {{PR_NOUN}}, follow `skills/pr-review-workflow.md`. This is **separate** from the ticket workflow.
+When asked to review a {{PR_NOUN}}, follow `skills/pr-review-workflow.md`. This is **separate** from the ticket workflow. The reviewer lineup comes from the project's `pr-review-strategy.md` (see the **Project {{PR_NOUN}} Review Strategy** section below); projects without one get a lead-only review.
 
 ### Ingest Source Document
 
@@ -137,7 +139,7 @@ Follow `skills/add-project.md` (runs as an installer). In summary:
 5. Create `projects/<name>/wiki/overview.md` plus pages as warranted.
 6. **Every project wiki page includes `commit:` in frontmatter.** Pattern/convention pages include **real code snippets**.
 7. Generate `projects/<name>/personas.md` plus the project's architects and engineers.
-8. Seed `projects/<name>/guardrails.md` from `skills/templates/project-guardrails-template.md` with the conventions observed during the scan, and tell the user it is theirs to edit.
+8. Seed `projects/<name>/guardrails.md` from `skills/templates/project-guardrails-template.md` with the conventions observed during the scan, and `projects/<name>/pr-review-strategy.md` from `skills/templates/project-pr-review-strategy-template.md` with the reviewer lineup for its areas. Tell the user both are theirs to edit.
 9. Update `index.md`, append to `log.md`, update `project-registry.md` (including code-index availability and worktree root).
 
 ### Update Codebase (Incremental Refresh)
@@ -152,7 +154,7 @@ Follow `skills/add-project.md` (runs as an installer). In summary:
 8. Update `project-registry.md`.
 9. Append to `log.md`.
 
-**Key principle:** scope updates with `git diff --stat`; do not re-ingest the whole repo. Preserves manual additions. **Never touch `projects/<name>/guardrails.md`** — it is human-owned policy, not derived from the code.
+**Key principle:** scope updates with `git diff --stat`; do not re-ingest the whole repo. Preserves manual additions. **Never touch `projects/<name>/guardrails.md` or `projects/<name>/pr-review-strategy.md`** — they are human-owned policy, not derived from the code.
 
 ### Query
 
@@ -173,6 +175,16 @@ Each project has a **`projects/<name>/guardrails.md`** — the single, human-own
 - **Both roles edit it.** The human sets policy; the AI proposes additions as it learns the repo. It is seeded at ingest and refined over time.
 - **Refresh never overwrites it.** The Update Codebase flow regenerates `wiki/` pages, but must leave `guardrails.md` untouched — it is not derived from the code.
 - **It is authoritative.** Every ticket phase reads it (it is knowledge source #2, right after the ticket) and must respect it. When a guardrail conflicts with a wiki observation, the guardrail wins — fix the code or flag it to the human.
+
+## Project {{PR_NOUN}} Review Strategy
+
+Each project may declare **`projects/<name>/pr-review-strategy.md`** (template: `skills/templates/project-pr-review-strategy-template.md`) — how a {{PR_NOUN}} is reviewed for that project. Like `guardrails.md` it is **prescriptive**, human-owned with AI-proposed additions, lives **outside `wiki/`**, and is **never** regenerated by an incremental refresh.
+
+It declares an **area map** (path globs → `backend` / `frontend` / `contract` / `data` / …), a **reviewer lineup** (always-on reviewers plus per-area specialists, each bound to a persona or contract file, with the condition that makes it run), **escalation triggers** that add a reviewer regardless of area, **per-area checklists**, project **hot spots**, and severity **calibration**.
+
+Division of labour: the strategy says *how* to review; `guardrails.md` and the `wiki/` pages say *what* the rules are. A project without a strategy still gets reviewed — `skills/pr-review-workflow.md` falls back to a lead-only pass and offers to seed one.
+
+**Naming:** the `pr-` prefix is deliberate. Strategy files are a family, one per activity, so a later `plan-strategy.md` (how planning is staffed and reviewed for this project) slots in beside this one without renaming anything. A strategy file always answers "how is this activity run **here**", never "what are the rules".
 
 ## Project Wiki Sections
 
